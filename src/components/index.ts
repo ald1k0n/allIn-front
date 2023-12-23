@@ -5,3 +5,4 @@ export * from './PieChart';
 export * from './Sidebar';
 export * from './Header';
 export * from './SideButtons';
+export * from './Input';
