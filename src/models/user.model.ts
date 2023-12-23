@@ -4,3 +4,9 @@ export interface IUser {
 	name: string;
 	role: string;
 }
+
+export interface ILogin {
+	phone: string;
+	code?: string;
+	device_token?: string;
+}
