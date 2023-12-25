@@ -2,6 +2,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 
 import userSlice from './slices/user.slice';
 import interactionSlice from './slices/interaction.slice';
+
 import { chatTypeApi } from './services/chat.service';
 
 const rootReducers = combineReducers({

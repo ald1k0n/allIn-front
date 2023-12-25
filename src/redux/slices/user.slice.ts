@@ -1,17 +1,33 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { ILogin } from './../../models/user.model';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { IUser } from '../../models';
+import { baseURL } from '../../configs';
+import axios from 'axios';
 
 interface InitialState {
 	accessToken: string | null;
 	refreshToken: string | null;
 	user: IUser | null;
+	isLoading: boolean;
+	isError: any;
 }
 
 const initialState: InitialState = {
 	accessToken: JSON.parse(localStorage.getItem('accessToken')!) || null,
 	refreshToken: JSON.parse(localStorage.getItem('refreshToken')!) || null,
 	user: null,
+	isLoading: false,
+	isError: null,
 };
+
+export const login = createAsyncThunk('userApi/login', async (body: ILogin) => {
+	// console.log(body, 'body in thunk');
+	const { data: response } = await axios.post(
+		`${baseURL}/auth/check-code`,
+		body
+	);
+	return response;
+});
 
 const userSlice = createSlice({
 	name: 'user',
@@ -30,6 +46,29 @@ const userSlice = createSlice({
 			state.accessToken = null;
 			state.refreshToken = null;
 		},
+	},
+	extraReducers: (builder) => {
+		builder.addCase(login.pending, (state) => {
+			state.isLoading = true;
+		});
+		builder.addCase(login.rejected, (state) => {
+			state.isLoading = false;
+			state.isError = 'Произошла ошибка на стороне сервера';
+		});
+		builder.addCase(login.fulfilled, (state, action) => {
+			// console.log(action);
+			state.accessToken = action.payload?.accessToken;
+			state.refreshToken = action.payload?.refreshToken;
+			localStorage.setItem(
+				'accessToken',
+				JSON.stringify(action.payload?.accessToken)
+			);
+			localStorage.setItem(
+				'refreshToken',
+				JSON.stringify(action.payload?.refreshToken)
+			);
+			state.user = action.payload?.user;
+		});
 	},
 });
 
