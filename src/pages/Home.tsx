@@ -29,7 +29,7 @@ export default function Home() {
 
 	useEffect(() => {
 		const labels = usersData?.users?.map((user) =>
-			format(new Date(user.createdAt), 'dd/mm/yyyy')
+			format(new Date(user.createdAt), 'dd/MM/yyyy')
 		);
 
 		const counts = labels?.reduce((acc: any, label) => {
@@ -56,7 +56,7 @@ export default function Home() {
 			});
 		};
 	}, [usersData]);
-
+	// console.log(data);
 	return (
 		<main className='w-full flex flex-wrap gap-2'>
 			{isLoading ? (
