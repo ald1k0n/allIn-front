@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { useGetUsersQuery } from '@/redux/services/users.service';
+import { useGetUsersQuery } from '@/redux/services/users/users.service';
 import { Card, Loader, LineGraph } from '@/components';
 import { format } from 'date-fns';
 

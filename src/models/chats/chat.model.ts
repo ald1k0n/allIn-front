@@ -1,6 +1,6 @@
-import { IUser } from './user.model.ts';
+import { IUser } from '../users/user.model.ts';
 import { IChatTypeModel } from './chat-type.model.ts';
-import { ILocationModel } from './location.model.ts';
+import { ILocationModel } from '../location.model.ts';
 import { ISubChatModel } from './subchat.model.ts';
 export interface IChatModel {
 	id?: number;
@@ -14,4 +14,11 @@ export interface IChatModel {
 	location: ILocationModel;
 	sub_chats: ISubChatModel[];
 	is_personal: boolean;
+}
+
+export const ChatCategories: {[index: string]: string} = {
+	"Личные": "personal",
+	"Сохранённые": "saved",
+	"Чаты": "subscribe",
+	"История": "history",
 }

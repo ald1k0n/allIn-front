@@ -1,4 +1,4 @@
-import { IUser } from './user.model.ts';
+import { IUser } from './users/user.model.ts';
 
 export interface ILocationModel {
 	id?: number;
