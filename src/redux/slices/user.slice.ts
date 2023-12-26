@@ -39,6 +39,7 @@ export const login = createAsyncThunk('userApi/login', async (body: ILogin) => {
 	const { data: response } = await axios.post(
 		`${baseURL}/auth/check-code`,
 		body
+		// { withCredentials: true }
 	);
 	return response;
 });

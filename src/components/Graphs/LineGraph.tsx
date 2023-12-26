@@ -14,7 +14,11 @@ interface IProps {
 	legend: string;
 }
 
-export const LineGraph: FC<IProps> = ({ labels, data, legend }) => {
+export const LineGraph: FC<IProps> = ({
+	labels = [],
+	data = [],
+	legend = '',
+}) => {
 	const dataset = {
 		labels,
 		datasets: data,
@@ -31,6 +35,12 @@ export const LineGraph: FC<IProps> = ({ labels, data, legend }) => {
 				text: legend,
 			},
 		},
+		scales: {
+			y: {
+				beginAtZero: true,
+				stepSize: 1,
+			},
+		},
 	};
 
 	return (
@@ -38,5 +48,6 @@ export const LineGraph: FC<IProps> = ({ labels, data, legend }) => {
 			options={options}
 			data={dataset}
 		/>
+		// <></>
 	);
 };
