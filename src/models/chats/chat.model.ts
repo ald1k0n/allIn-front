@@ -15,3 +15,10 @@ export interface IChatModel {
 	sub_chats: ISubChatModel[];
 	is_personal: boolean;
 }
+
+export const ChatCategories: {[index: string]: string} = {
+	"Личные": "personal",
+	"Сохранённые": "saved",
+	"Чаты": "subscribe",
+	"История": "history",
+}
