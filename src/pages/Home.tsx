@@ -49,6 +49,12 @@ export default function Home() {
 				},
 			],
 		}));
+		return () => {
+			setData({
+				data: [],
+				labels: [],
+			});
+		};
 	}, [usersData]);
 
 	return (

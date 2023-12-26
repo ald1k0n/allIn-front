@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQueryReAuth } from '../../baseQuery.ts';
-import { IMyChatModel } from '../../../models/chats/my-chat.model.ts';
-import {ChatCategories} from "../../../models/chats/chat.model.ts";
+import { baseQueryReAuth } from '@/redux/baseQuery.ts';
+import { IMyChatModel } from '@/models/chats/my-chat.model.ts';
+import { ChatCategories } from '@/models/chats/chat.model.ts';
 
 export const myChatApi = createApi({
 	reducerPath: 'myChat',

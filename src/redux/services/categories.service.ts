@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryReAuth } from '../baseQuery.ts';
-import { ICategoryModel } from '../../models/category.model.ts';
+import { ICategoryModel } from '@/models/category.model.ts';
 
 export const categoryApi = createApi({
 	reducerPath: 'categories',

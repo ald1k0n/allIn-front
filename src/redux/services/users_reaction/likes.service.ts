@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQueryReAuth } from '../../baseQuery.ts';
-import { ILikeModel } from '../../../models/users_reaction/like.model.ts';
+import { baseQueryReAuth } from '@/redux/baseQuery.ts';
+import { ILikeModel } from '@/models/users_reaction/like.model.ts';
 
 export const likeApi = createApi({
 	reducerPath: 'like',

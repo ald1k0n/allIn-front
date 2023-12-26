@@ -2,14 +2,13 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { lazy, Suspense, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 
-import { Layout } from './components/UI/Layout';
-import { useAppDispatch, useAppSelector } from './hooks';
-import { getMe } from './redux/slices/user.slice';
-import { Loader } from './components';
+import { Layout } from '@/components/UI/Layout';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { getMe } from '@/redux/slices/user.slice';
+import { Loader } from '@/components';
 
-const Home = lazy(() => import('./pages/Home'));
-const Login = lazy(() => import('./pages/Login'));
-
+const Home = lazy(() => import('@/pages/Home'));
+const Login = lazy(() => import('@/pages/Login'));
 const router = createBrowserRouter([
 	{
 		path: '/',

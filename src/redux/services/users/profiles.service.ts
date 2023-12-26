@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQueryReAuth } from '../../baseQuery.ts';
-import {IProfileModel} from "../../../models/users/profile.model.ts";
+import { baseQueryReAuth } from '@/redux/baseQuery.ts';
+import { IProfileModel } from '@/models/users/profile.model.ts';
 
 export const profileApi = createApi({
 	reducerPath: 'profile',

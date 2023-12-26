@@ -12,9 +12,7 @@ import { categoryApi } from './services/categories.service.ts';
 import { profileApi } from './services/users/profiles.service.ts';
 import { myChatApi } from './services/chats/myChats.service.ts';
 
-const rootReducers = combineReducers({
-	user: userSlice,
-	interaction: interactionSlice,
+const serviceReducers = {
 	[chatTypeApi.reducerPath]: chatTypeApi.reducer,
 	[chatApi.reducerPath]: chatApi.reducer,
 	[commentApi.reducerPath]: commentApi.reducer,
@@ -23,21 +21,29 @@ const rootReducers = combineReducers({
 	[categoryApi.reducerPath]: categoryApi.reducer,
 	[profileApi.reducerPath]: profileApi.reducer,
 	[myChatApi.reducerPath]: myChatApi.reducer,
+};
+
+const serviceMiddlewares = [
+	chatTypeApi.middleware,
+	chatApi.middleware,
+	commentApi.middleware,
+	likeApi.middleware,
+	categoryApi.middleware,
+	profileApi.middleware,
+	myChatApi.middleware,
+	userApi.middleware,
+];
+
+const rootReducers = combineReducers({
+	user: userSlice,
+	interaction: interactionSlice,
+	...serviceReducers,
 });
 
 export const store = configureStore({
 	reducer: rootReducers,
 	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware().concat(
-			chatTypeApi.middleware,
-			chatApi.middleware,
-			commentApi.middleware,
-			likeApi.middleware,
-			categoryApi.middleware,
-			profileApi.middleware,
-			myChatApi.middleware,
-			userApi.middleware
-		),
+		getDefaultMiddleware().concat(...serviceMiddlewares),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

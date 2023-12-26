@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQueryReAuth } from '../../baseQuery.ts';
-import { ICommentModel } from '../../../models/users_reaction/comment.model.ts';
+import { baseQueryReAuth } from '@/redux/baseQuery.ts';
+import { ICommentModel } from '@/models/users_reaction/comment.model.ts';
 
 export const commentApi = createApi({
 	reducerPath: 'comment',
