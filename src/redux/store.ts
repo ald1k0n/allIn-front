@@ -7,6 +7,7 @@ import { chatTypeApi } from './services/chatType.service';
 import { chatApi } from './services/chats.service.ts';
 import { commentApi } from './services/comments.service.ts';
 import { likeApi } from './services/likes.service.ts';
+import { userApi } from './services/users.service.ts';
 
 const rootReducers = combineReducers({
 	user: userSlice,
@@ -15,6 +16,7 @@ const rootReducers = combineReducers({
 	[chatApi.reducerPath]: chatApi.reducer,
 	[commentApi.reducerPath]: commentApi.reducer,
 	[likeApi.reducerPath]: likeApi.reducer,
+	[userApi.reducerPath]: userApi.reducer,
 });
 
 export const store = configureStore({
