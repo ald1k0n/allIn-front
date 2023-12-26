@@ -20,6 +20,21 @@ const initialState: InitialState = {
 	isError: null,
 };
 
+axios.interceptors.request.use(
+	(response: any) => {
+		if (response.status !== 401) {
+			return response;
+		}
+
+		return refresh().then(() => {
+			return axios(response.config);
+		});
+	},
+	(error) => {
+		return Promise.reject(error);
+	}
+);
+
 export const login = createAsyncThunk('userApi/login', async (body: ILogin) => {
 	// console.log(body, 'body in thunk');
 	const { data: response } = await axios.post(
@@ -27,6 +42,30 @@ export const login = createAsyncThunk('userApi/login', async (body: ILogin) => {
 		body
 	);
 	return response;
+});
+
+const refresh = async () => {
+	const { data } = await axios.get(`${baseURL}/auth/refresh`, {
+		headers: {
+			authorization: `Bearer ${JSON.parse(
+				localStorage.getItem('refreshToken')!
+			)}`,
+		},
+		// withCredentials: true,
+	});
+	return data;
+};
+
+export const getMe = createAsyncThunk('userApi/getMe', async () => {
+	const { data } = await axios.get(`${baseURL}/users/account`, {
+		headers: {
+			authorization: `Bearer ${JSON.parse(
+				localStorage.getItem('accessToken')!
+			)}`,
+		},
+	});
+
+	return data;
 });
 
 const userSlice = createSlice({
@@ -67,6 +106,19 @@ const userSlice = createSlice({
 				'refreshToken',
 				JSON.stringify(action.payload?.refreshToken)
 			);
+			state.user = action.payload?.user;
+		});
+
+		// getME
+		builder.addCase(getMe.pending, (state) => {
+			state.isLoading = true;
+		});
+		builder.addCase(getMe.rejected, (state) => {
+			state.isLoading = false;
+			state.isError = 'Произошла ошибка на стороне сервера';
+			state.user = null;
+		});
+		builder.addCase(getMe.fulfilled, (state, action) => {
 			state.user = action.payload?.user;
 		});
 	},

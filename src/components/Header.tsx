@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { toggleOpen } from '../redux/slices/interaction.slice';
 import { useAppDispatch } from '../hooks';
+import { useAppSelector } from '../hooks';
 
 interface IProps {
 	children: ReactNode;
@@ -12,6 +13,8 @@ interface IProps {
 export const Header: FC<IProps> = ({ children }) => {
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
+
+	const { user } = useAppSelector((state) => state.user);
 
 	return (
 		<div className='flex flex-col w-full'>
@@ -35,7 +38,9 @@ export const Header: FC<IProps> = ({ children }) => {
 				</div>
 
 				<div className='h-full hidden md:flex items-center gap-3'>
-					<div className='text-base'>Username</div>
+					<div className='text-base'>
+						{user ? user.name.toUpperCase() : 'username'}
+					</div>
 
 					<div className='h-full p-2'>
 						<img
