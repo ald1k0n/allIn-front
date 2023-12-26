@@ -7,14 +7,14 @@ export const userApi = createApi({
 	baseQuery: baseQueryReAuth,
 	tagTypes: ['Users'],
 	endpoints: (builder) => ({
-		getUsers: builder.query<IUser[], void>({
+		getUsers: builder.query<{ users: IUser[] }, void>({
 			query: () => ({
 				url: 'admin/users',
 			}),
 			providesTags: (result) =>
 				result
 					? [
-							...result.map(({ id }) => ({ type: 'Users' as const, id })),
+							...result.users.map(({ id }) => ({ type: 'Users' as const, id })),
 							{ type: 'Users', id: 'LIST' },
 					  ]
 					: [{ type: 'Users', id: 'LIST' }],

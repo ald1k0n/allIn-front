@@ -1,6 +1,6 @@
 import { ReactNode, FC } from 'react';
-import { Sidebar, Header } from '.';
-import { useAppSelector } from '../hooks';
+import { Sidebar, Header } from '../index';
+import { useAppSelector } from '@/hooks';
 
 interface IProps {
 	children: ReactNode;

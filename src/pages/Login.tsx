@@ -2,11 +2,11 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-import { ILogin } from '../models';
-import { useAppDispatch } from '../hooks';
-import { Button, Input } from '../components';
-import logo from '../assets/logo.jpg';
-import { login } from '../redux/slices/user.slice';
+import { ILogin } from '@/models';
+import { useAppDispatch } from '@/hooks';
+import { Button, Input } from '@/components';
+import logo from '@/assets/logo.jpg';
+import { login } from '@/redux/slices/user.slice';
 export default function Login() {
 	const { register, handleSubmit, setValue } = useForm<ILogin>();
 	const dispatch = useAppDispatch();

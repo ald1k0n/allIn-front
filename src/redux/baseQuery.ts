@@ -1,12 +1,12 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
-import { baseURL } from '../configs';
+import { baseURL } from '@/configs';
 
 import { logout, setAccessToken } from './slices/user.slice.ts';
 
 const baseQuery = fetchBaseQuery({
 	baseUrl: baseURL,
 	prepareHeaders: (header) => {
-		const access_token = localStorage.getItem('accessToken');
+		const access_token = JSON.parse(localStorage.getItem('accessToken')!);
 		if (access_token) {
 			header.set('authorization', `Bearer ${access_token}`);
 		}

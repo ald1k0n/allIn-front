@@ -26,7 +26,8 @@ export const store = configureStore({
 			chatTypeApi.middleware,
 			chatApi.middleware,
 			commentApi.middleware,
-			likeApi.middleware
+			likeApi.middleware,
+			userApi.middleware
 		),
 });
 

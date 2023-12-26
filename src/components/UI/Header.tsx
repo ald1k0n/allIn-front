@@ -1,10 +1,9 @@
 import { ReactNode, FC } from 'react';
-import logo from '../assets/logo.jpg';
+import logo from '@/assets/logo.jpg';
 import { useNavigate } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { toggleOpen } from '../redux/slices/interaction.slice';
-import { useAppDispatch } from '../hooks';
-import { useAppSelector } from '../hooks';
+import { toggleOpen } from '@/redux/slices/interaction.slice';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 
 interface IProps {
 	children: ReactNode;

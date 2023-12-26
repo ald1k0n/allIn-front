@@ -1,7 +1,6 @@
-import { ILogin } from './../../models/user.model';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { IUser } from '../../models';
-import { baseURL } from '../../configs';
+import { IUser, ILogin } from '@/models';
+import { baseURL } from '@/configs';
 import axios from 'axios';
 
 interface InitialState {

@@ -2,7 +2,7 @@ import { HiSquaresPlus, HiChatBubbleBottomCenter } from 'react-icons/hi2';
 import { MdWorkspacePremium } from 'react-icons/md';
 import { FC } from 'react';
 
-import { Button, SideButtons } from '.';
+import { Button, SideButtons } from '..';
 
 interface IProps {
 	isOpen?: boolean;

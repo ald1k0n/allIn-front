@@ -2,9 +2,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { lazy, Suspense, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 
-import { Layout } from './components/Layout';
+import { Layout } from './components/UI/Layout';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { getMe } from './redux/slices/user.slice';
+import { Loader } from './components';
 
 const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
@@ -51,7 +52,12 @@ export default function App() {
 	}, [user, dispatch]);
 
 	return (
-		<Suspense fallback={<div>Loading...</div>}>
+		<Suspense
+			fallback={
+				<div className='w-full h-screen flex justify-center items-center'>
+					<Loader />
+				</div>
+			}>
 			<RouterProvider router={router} />
 			<Toaster position='top-right' />
 		</Suspense>
