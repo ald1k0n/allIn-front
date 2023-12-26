@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQueryReAuth } from '../baseQuery.ts';
-import { IChatTypeModel } from '../../models/chat-type.model.ts';
+import { baseQueryReAuth } from '../../baseQuery.ts';
+import { IChatTypeModel } from '../../../models/chats/chat-type.model.ts';
 
 export const chatTypeApi = createApi({
 	reducerPath: 'chatType',

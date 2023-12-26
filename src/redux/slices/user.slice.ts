@@ -1,4 +1,4 @@
-import { ILogin } from './../../models/user.model';
+import { ILogin } from '../../models/users/user.model.ts';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { IUser } from '../../models';
 import { baseURL } from '../../configs';

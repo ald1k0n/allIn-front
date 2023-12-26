@@ -3,11 +3,11 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import userSlice from './slices/user.slice';
 import interactionSlice from './slices/interaction.slice';
 
-import { chatTypeApi } from './services/chatType.service';
-import { chatApi } from './services/chats.service.ts';
-import { commentApi } from './services/comments.service.ts';
-import { likeApi } from './services/likes.service.ts';
-import { userApi } from './services/users.service.ts';
+import { chatTypeApi } from './services/chats/chatType.service.ts';
+import { chatApi } from './services/chats/chats.service.ts';
+import { commentApi } from './services/users_reaction/comments.service.ts';
+import { likeApi } from './services/users_reaction/likes.service.ts';
+import { userApi } from './services/users/users.service.ts';
 
 const rootReducers = combineReducers({
 	user: userSlice,

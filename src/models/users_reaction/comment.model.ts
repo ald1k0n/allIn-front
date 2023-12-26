@@ -1,5 +1,5 @@
-import { IProfileModel } from './profile.model.ts';
-import { IUser } from './user.model.ts';
+import { IProfileModel } from '../users/profile.model.ts';
+import { IUser } from '../users/user.model.ts';
 
 export interface ICommentModel {
 	id?: number;
