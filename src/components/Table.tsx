@@ -29,14 +29,15 @@ export const Table: FC<IProps> = ({ data = [], columns = [] }) => {
 	});
 
 	return (
-		<div className='w-full p-3'>
-			<table>
-				<thead>
+		<div className='w-full p-3 overflow-auto'>
+			<table className='w-full border'>
+				<thead className='bg-gray-300'>
 					{table.getHeaderGroups().map((headerGroup) => (
 						<tr key={headerGroup.id}>
 							{headerGroup.headers.map((header) => {
 								return (
 									<th
+										className='px-2.5 py-2 border'
 										key={header.id}
 										colSpan={header.colSpan}>
 										{header.isPlaceholder ? null : (
@@ -63,7 +64,9 @@ export const Table: FC<IProps> = ({ data = [], columns = [] }) => {
 							<tr key={row.id}>
 								{row.getVisibleCells().map((cell) => {
 									return (
-										<td key={cell.id}>
+										<td
+											className='text-center border py-1.5 px-2'
+											key={cell.id}>
 											{flexRender(
 												cell.column.columnDef.cell,
 												cell.getContext()

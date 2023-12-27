@@ -38,8 +38,8 @@ export const login = createAsyncThunk('userApi/login', async (body: ILogin) => {
 	// console.log(body, 'body in thunk');
 	const { data: response } = await axios.post(
 		`${baseURL}/auth/check-code`,
-		body
-		// { withCredentials: true }
+		body,
+		{ withCredentials: true }
 	);
 	return response;
 });
@@ -51,7 +51,7 @@ const refresh = async () => {
 				localStorage.getItem('refreshToken')!
 			)}`,
 		},
-		// withCredentials: true,
+		withCredentials: true,
 	});
 	return data;
 };

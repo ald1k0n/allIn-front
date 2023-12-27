@@ -7,14 +7,17 @@ export const profileApi = createApi({
 	baseQuery: baseQueryReAuth,
 	tagTypes: ['Profiles'],
 	endpoints: (builder) => ({
-		getProfiles: builder.query<IProfileModel[], void>({
-			query: () => ({
-				url: '/users/profile',
+		getProfiles: builder.query<{ profiles: IProfileModel[] }, number>({
+			query: (id) => ({
+				url: `/users/${id}/profile`,
 			}),
 			providesTags: (result) =>
 				result
 					? [
-							...result.map(({ id }) => ({ type: 'Profiles' as const, id })),
+							...result.profiles.map(({ id }) => ({
+								type: 'Profiles' as const,
+								id,
+							})),
 							{ type: 'Profiles', id: 'LIST' },
 					  ]
 					: [{ type: 'Profiles', id: 'LIST' }],

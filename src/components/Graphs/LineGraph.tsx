@@ -11,14 +11,9 @@ interface IData {
 interface IProps {
 	labels: string[];
 	data: IData[];
-	legend: string;
 }
 
-export const LineGraph: FC<IProps> = ({
-	labels = [],
-	data = [],
-	legend = '',
-}) => {
+export const LineGraph: FC<IProps> = ({ labels = [], data = [] }) => {
 	const dataset = {
 		labels,
 		datasets: data,
@@ -26,15 +21,7 @@ export const LineGraph: FC<IProps> = ({
 
 	const options = {
 		responsive: true,
-		plugins: {
-			legend: {
-				position: 'top' as const,
-			},
-			title: {
-				display: true,
-				text: legend,
-			},
-		},
+
 		scales: {
 			y: {
 				beginAtZero: true,

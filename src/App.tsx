@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { lazy, Suspense, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 
@@ -9,6 +9,9 @@ import { Loader } from '@/components';
 
 const Home = lazy(() => import('@/pages/Home'));
 const Login = lazy(() => import('@/pages/Login'));
+const Users = lazy(() => import('@/pages/Users/Users'));
+const UserProfiles = lazy(() => import('@/pages/Users/UserProfiles'));
+
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -26,13 +29,21 @@ const router = createBrowserRouter([
 			</Layout>
 		),
 	},
+
 	{
-		path: '/business',
+		path: '/users',
 		element: (
 			<Layout>
-				<>Business</>
+				<Outlet />
+				<Users />
 			</Layout>
 		),
+		children: [
+			{
+				path: '/users/:id',
+				element: <UserProfiles />,
+			},
+		],
 	},
 	{
 		path: '/login',
