@@ -21,7 +21,7 @@ const initialState: InitialState = {
 
 axios.interceptors.request.use(
 	(response: any) => {
-		if (response.status !== 401) {
+		if (response.status !== 400) {
 			return response;
 		}
 
@@ -63,6 +63,7 @@ export const getMe = createAsyncThunk('userApi/getMe', async () => {
 				localStorage.getItem('accessToken')!
 			)}`,
 		},
+		withCredentials: true,
 	});
 
 	return data;
@@ -119,6 +120,7 @@ const userSlice = createSlice({
 			state.user = null;
 		});
 		builder.addCase(getMe.fulfilled, (state, action) => {
+			state.isLoading = false;
 			state.user = action.payload?.user;
 		});
 	},
