@@ -6,14 +6,14 @@ export interface IChatModel {
 	id?: number;
 	title: string;
 	photo?: string;
-	user_id: number;
-	user: IUser;
-	type_id: number;
-	type: IChatTypeModel;
-	location_id: number;
-	location: ILocationModel;
-	sub_chats: ISubChatModel[];
-	is_personal: boolean;
+	user_id?: number;
+	user?: IUser;
+	type_id?: number;
+	type?: IChatTypeModel;
+	location_id?: number;
+	location?: ILocationModel;
+	sub_chats?: ISubChatModel[];
+	is_personal?: boolean;
 }
 
 export const ChatCategories: { [index: string]: string } = {
