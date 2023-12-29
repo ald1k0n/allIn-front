@@ -12,13 +12,14 @@ import {
 } from '@/redux/services';
 
 export default function Users() {
-	const { data: users, isLoading: isLoadingUsers } = useGetUsersQuery();
 	const [isOpen, setIsOpen] = useState(false);
 	const [rowData, setRowData] = useState<IUser>();
-	const [updateUser] = useUpdateUsersMutation();
-	const [deleteUser] = useDeleteUserMutation();
 	const [user, setUser] = useState(rowData);
 	const [file, setFile] = useState(null);
+
+	const { data: users, isLoading: isLoadingUsers } = useGetUsersQuery();
+	const [updateUser] = useUpdateUsersMutation();
+	const [deleteUser] = useDeleteUserMutation();
 
 	const fileRef = useRef(null);
 
@@ -137,6 +138,11 @@ export default function Users() {
 	return (
 		<>
 			<main className='w-full flex gap-y-4 gap-4 justify-center md:justify-normal flex-wrap'>
+				<div className='w-full flex justify-end'>
+					<Link to='/users/create'>
+						<Button styles='default'>Создать пользователя</Button>
+					</Link>
+				</div>
 				<Table
 					columns={cols}
 					data={users?.data as IUser[]}
