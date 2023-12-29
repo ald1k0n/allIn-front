@@ -48,6 +48,24 @@ export const chatApi = createApi({
 					  ]
 					: [{ type: 'Subscribed', id: 'LIST' }],
 		}),
+
+		updateChat: builder.mutation<undefined, any>({
+			query: (body) => {
+				return {
+					url: `admin/chats/${body.get('id')}`,
+					method: 'PATCH',
+					body,
+				};
+			},
+			invalidatesTags: ['Chats'],
+		}),
+		deleteChat: builder.mutation<undefined, number>({
+			query: (id) => ({
+				url: `admin/chats/${id}`,
+				method: 'DELETE',
+			}),
+			invalidatesTags: ['Chats'],
+		}),
 	}),
 });
 
@@ -55,4 +73,6 @@ export const {
 	useGetChatsQuery,
 	useLazyGetSavedChatsQuery,
 	useLazyGetSubscribedChatsQuery,
+	useUpdateChatMutation,
+	useDeleteChatMutation
 } = chatApi;
