@@ -25,7 +25,7 @@ export default function Home() {
 	});
 
 	useEffect(() => {
-		const labels = usersData?.users?.map((user) =>
+		const labels = usersData?.data?.map((user) =>
 			format(new Date(user.createdAt), 'dd/MM/yyyy')
 		);
 
@@ -67,7 +67,7 @@ export default function Home() {
 									<div className='text-center text-lg'>
 										Общее количество пользователей:
 									</div>
-									<div className='text-3xl'>{usersData?.users.length}</div>
+									<div className='text-3xl'>{usersData?.count}</div>
 								</div>
 							</Card>
 						</section>

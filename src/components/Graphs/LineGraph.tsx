@@ -35,6 +35,5 @@ export const LineGraph: FC<IProps> = ({ labels = [], data = [] }) => {
 			options={options}
 			data={dataset}
 		/>
-		// <></>
 	);
 };

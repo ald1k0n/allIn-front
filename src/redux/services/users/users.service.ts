@@ -7,19 +7,31 @@ export const userApi = createApi({
 	baseQuery: baseQueryReAuth,
 	tagTypes: ['Users'],
 	endpoints: (builder) => ({
-		getUsers: builder.query<{ users: IUser[] }, void>({
+		getUsers: builder.query<{ data: IUser[]; count: number }, void>({
 			query: () => ({
 				url: 'admin/users',
 			}),
 			providesTags: (result) =>
 				result
 					? [
-							...result.users.map(({ id }) => ({ type: 'Users' as const, id })),
+							...result.data.map(({ id }) => ({ type: 'Users' as const, id })),
 							{ type: 'Users', id: 'LIST' },
 					  ]
 					: [{ type: 'Users', id: 'LIST' }],
 		}),
+		updateUsers: builder.mutation<undefined, IUser>({
+			query: (body) => {
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				const { id, ...newBody } = body;
+				return {
+					url: `admin/users/${body.id}`,
+					method: 'PATCH',
+					body: newBody,
+				};
+			},
+			invalidatesTags: ['Users'],
+		}),
 	}),
 });
 
-export const { useGetUsersQuery } = userApi;
+export const { useGetUsersQuery, useUpdateUsersMutation } = userApi;

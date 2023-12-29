@@ -1,5 +1,5 @@
 export interface IChatTypeModel {
-    id?: number,
-    title: string,
-    isEditable: boolean
+	id?: number;
+	title: string;
+	isEditable: boolean;
 }

@@ -16,9 +16,9 @@ export interface IChatModel {
 	is_personal: boolean;
 }
 
-export const ChatCategories: {[index: string]: string} = {
-	"Личные": "personal",
-	"Сохранённые": "saved",
-	"Чаты": "subscribe",
-	"История": "history",
-}
+export const ChatCategories: { [index: string]: string } = {
+	Личные: 'personal',
+	Сохранённые: 'saved',
+	Чаты: 'subscribe',
+	История: 'history',
+};

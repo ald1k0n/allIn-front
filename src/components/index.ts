@@ -8,3 +8,4 @@ export * from './UI/SideButtons';
 export * from './UI/Input';
 export * from './UI/Loader';
 export * from './UI/Card';
+export * from './UI/Modal';

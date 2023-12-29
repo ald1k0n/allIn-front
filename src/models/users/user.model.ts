@@ -1,10 +1,10 @@
 export interface IUser {
 	id?: number;
-	phone: string;
-	name: string;
-	role: string;
-	avatar: string;
-	createdAt: string;
+	phone?: string;
+	name?: string;
+	role?: string;
+	avatar?: string;
+	createdAt?: string;
 }
 
 export interface ILogin {
