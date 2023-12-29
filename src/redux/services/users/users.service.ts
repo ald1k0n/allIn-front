@@ -19,19 +19,28 @@ export const userApi = createApi({
 					  ]
 					: [{ type: 'Users', id: 'LIST' }],
 		}),
-		updateUsers: builder.mutation<undefined, IUser>({
+		updateUsers: builder.mutation<undefined, any>({
 			query: (body) => {
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-				const { id, ...newBody } = body;
 				return {
-					url: `admin/users/${body.id}`,
+					url: `admin/users/${body.get('id')}`,
 					method: 'PATCH',
-					body: newBody,
+					body,
 				};
 			},
+			invalidatesTags: ['Users'],
+		}),
+		deleteUser: builder.mutation<undefined, number>({
+			query: (id) => ({
+				url: `admin/users/${id}`,
+				method: 'DELETE',
+			}),
 			invalidatesTags: ['Users'],
 		}),
 	}),
 });
 
-export const { useGetUsersQuery, useUpdateUsersMutation } = userApi;
+export const {
+	useGetUsersQuery,
+	useUpdateUsersMutation,
+	useDeleteUserMutation,
+} = userApi;

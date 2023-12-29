@@ -1,6 +1,7 @@
 import { HiSquaresPlus, HiChatBubbleBottomCenter } from 'react-icons/hi2';
 import { FaUser } from 'react-icons/fa';
-
+import { useAppDispatch } from '@/hooks';
+import { logout } from '@/redux/slices/user.slice';
 import { FC } from 'react';
 
 import { Button, SideButtons } from '..';
@@ -10,6 +11,7 @@ interface IProps {
 }
 
 export const Sidebar: FC<IProps> = ({ isOpen }) => {
+	const dispatch = useAppDispatch();
 	return (
 		<aside
 			className={`min-h-screen ${
@@ -33,7 +35,11 @@ export const Sidebar: FC<IProps> = ({ isOpen }) => {
 				</SideButtons>
 
 				<div className='absolute bottom-12'>
-					<Button styles='logout'>Выйти</Button>
+					<Button
+						onClick={() => dispatch(logout())}
+						styles='logout'>
+						Выйти
+					</Button>
 				</div>
 			</div>
 		</aside>

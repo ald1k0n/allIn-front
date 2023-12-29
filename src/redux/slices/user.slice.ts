@@ -85,6 +85,7 @@ const userSlice = createSlice({
 			localStorage.clear();
 			state.accessToken = null;
 			state.refreshToken = null;
+			state.user = null;
 		},
 	},
 	extraReducers: (builder) => {

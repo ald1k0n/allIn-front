@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { FcLike } from 'react-icons/fc';
 
 import { useGetProfilesQuery } from '@/redux/services';
 import { Loader, Card } from '@/components';
@@ -38,8 +39,8 @@ export default function UserProfiles() {
 							</div>
 						</div>
 
-						<div className='w-full text-center text-xs md:text-sm'>
-							Количество лайков: {profile.likes.length}
+						<div className='w-full text-center text-xs md:text-sm flex justify-center items-center gap-0.5'>
+							Количество <FcLike />: {profile.likes.length}
 						</div>
 					</Card>
 				))}

@@ -1,18 +1,26 @@
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 import { Button, Loader, Modal, Table, Input } from '@/components';
 import { IUser } from '@/models';
-import { useGetUsersQuery, useUpdateUsersMutation } from '@/redux/services';
+import {
+	useGetUsersQuery,
+	useUpdateUsersMutation,
+	useDeleteUserMutation,
+} from '@/redux/services';
 
 export default function Users() {
 	const { data: users, isLoading: isLoadingUsers } = useGetUsersQuery();
-	const [isOpen, setIsOpen] = useState(true);
+	const [isOpen, setIsOpen] = useState(false);
 	const [rowData, setRowData] = useState<IUser>();
 	const [updateUser] = useUpdateUsersMutation();
+	const [deleteUser] = useDeleteUserMutation();
 	const [user, setUser] = useState(rowData);
+	const [file, setFile] = useState(null);
+
+	const fileRef = useRef(null);
 
 	const cols = [
 		{
@@ -56,13 +64,27 @@ export default function Users() {
 			},
 		},
 		{
+			header: 'Удалить',
+			cell: ({ row }: { row: { original: IUser } }) => {
+				return (
+					<Button
+						onClick={() => {
+							handleDelete(row.original.id!);
+						}}
+						styles='logout'>
+						Удалить
+					</Button>
+				);
+			},
+		},
+		{
 			header: 'Изменить',
 			cell: ({ row }: { row: { original: IUser } }) => {
 				return (
 					<Button
 						onClick={() => {
-							setRowData(row.original)
-							setIsOpen(true)
+							setRowData(row.original);
+							setIsOpen(true);
 						}}
 						styles='default'>
 						Изменить
@@ -72,7 +94,41 @@ export default function Users() {
 		},
 	];
 
-	const handleUpdate = async () => {};
+	const handleUpdate = async () => {
+		const values = {
+			// ...rowData,
+			...user,
+			id: rowData?.id,
+		};
+
+		const formData = new FormData();
+
+		Object.keys(values).map((key) => {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			//@ts-ignore
+			formData.append(key, values[key]);
+		});
+		// console.log(formData.get('id'));
+		if (file) {
+			formData.append('avatar', file);
+		}
+
+		await toast
+			.promise(updateUser(formData).unwrap(), {
+				success: 'Успешно обновлен пользователь',
+				loading: 'Загрузка...',
+				error: (err) => JSON.stringify(err, null, 2),
+			})
+			.finally(() => setIsOpen(false));
+	};
+
+	const handleDelete = async (id: number) => {
+		await toast.promise(deleteUser(id).unwrap(), {
+			success: 'Успешно удален пользователь',
+			loading: 'Загрузка...',
+			error: (err) => JSON.stringify(err, null, 2),
+		});
+	};
 
 	if (isLoadingUsers) {
 		return <Loader />;
@@ -86,35 +142,84 @@ export default function Users() {
 					data={users?.data as IUser[]}
 				/>
 			</main>
-			{isOpen && <Modal setIsOpen={setIsOpen}>
-				<div>
-					<Input
-						input_size={"medium"}
-						defaultValue={rowData?.name}
-						value={user?.name}
-						onChange={(e) => setUser({ ...user, name: e.target.value })}
-						type="text"
-						placeholder={"Имя пользователя"}
-						label={"Имя пользователя"}/>
+			{isOpen && (
+				<Modal setIsOpen={setIsOpen}>
+					<div className='p-3 flex flex-col gap-y-1 w-80'>
+						<div className='text-center text-lg'>
+							Пользователь {rowData?.name}
+						</div>
+						<Input
+							input_size={'medium'}
+							defaultValue={rowData?.name}
+							value={user?.name}
+							onChange={(e) => setUser({ ...user, name: e.target.value })}
+							type='text'
+							placeholder={'Имя пользователя'}
+							label={'Имя пользователя'}
+						/>
 
-					<Input
-						input_size={"medium"}
-						defaultValue={rowData?.phone}
-						value={user?.phone}
-						onChange={(e) => setUser({ ...user, phone: e.target.value })}
-						type="text"
-						placeholder={"Номер телефона"}
-						label={"Номер телефона"}/>
+						<Input
+							input_size={'medium'}
+							defaultValue={rowData?.phone}
+							value={user?.phone}
+							onChange={(e) => setUser({ ...user, phone: e.target.value })}
+							type='text'
+							placeholder={'Номер телефона'}
+							label={'Номер телефона'}
+						/>
+						<div>
+							<label
+								htmlFor='avatar'
+								className={`text-lg font-medium text-color`}>
+								Аватар
+							</label>
 
-					<select name="" id="" defaultValue={user?.role} onChange={(e) => setUser({ ...user, role: e.target.value })}>
-						<option value="" selected={true} disabled={true}>Выберите роль</option>
-						<option value="admin">Админ</option>
-						<option value="client">Клиент</option>
-					</select>
+							<Button
+								disabled={!!file}
+								onClick={() => (fileRef?.current as any)?.click()}
+								styles='outline'>
+								Загрузить аватар
+							</Button>
+							<input
+								type='file'
+								hidden
+								ref={fileRef}
+								onChange={(e) => {
+									setFile((e.target as any).files[0]);
+									// console.log((e.target as any).files[0]);
+								}}
+							/>
+						</div>
+						<div>
+							<label
+								htmlFor='role'
+								className={`text-lg font-medium text-color`}>
+								Роли
+							</label>
+							<select
+								id='role'
+								className='w-full border h-8'
+								defaultValue={user?.role}
+								onChange={(e) => setUser({ ...user, role: e.target.value })}>
+								<option
+									value=''
+									selected={true}
+									disabled={true}>
+									Выберите роль
+								</option>
+								<option value='admin'>Админ</option>
+								<option value='client'>Клиент</option>
+							</select>
+						</div>
 
-					<Button styles={"default"} onClick={() => {console.log(user)}}>Отправить</Button>
-				</div>
-			</Modal>}
+						<Button
+							styles={'default'}
+							onClick={handleUpdate}>
+							Отправить
+						</Button>
+					</div>
+				</Modal>
+			)}
 		</>
 	);
 }

@@ -1,10 +1,9 @@
-import { Dispatch } from '@reduxjs/toolkit';
-import { ReactNode, FC, SetStateAction } from 'react';
+import { ReactNode, FC, SetStateAction, Dispatch } from 'react';
 import { RxCross1 } from 'react-icons/rx';
 
 interface IProps {
 	children: ReactNode;
-	setIsOpen: Dispatch<SetStateAction<any>>;
+	setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export const Modal: FC<IProps> = ({ children, setIsOpen }) => {
