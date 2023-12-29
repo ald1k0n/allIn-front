@@ -81,7 +81,7 @@ export default function Home() {
 										<div className='text-center text-lg'>
 											Количество созданных чатов:
 										</div>
-										<div className='text-3xl'>{chatData?.chats.length}</div>
+										<div className='text-3xl'>{chatData?.count}</div>
 									</div>
 								</Card>
 							)}

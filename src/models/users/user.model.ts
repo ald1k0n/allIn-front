@@ -5,6 +5,8 @@ export interface IUser {
 	role?: string;
 	avatar?: string;
 	createdAt?: string;
+	location_id?: number;
+	device_token?: string;
 }
 
 export interface ILogin {
