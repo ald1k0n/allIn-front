@@ -13,6 +13,7 @@ const Users = lazy(() => import('@/pages/Users/Users'));
 const UserProfiles = lazy(() => import('@/pages/Users/UserProfiles'));
 const UserCreate = lazy(() => import('@/pages/Users/UserCreate'));
 const Chats = lazy(() => import('@/pages/Chats/Chats'));
+const ChatCreate = lazy(() => import('@/pages/Chats/ChatCreate'));
 
 const router = createBrowserRouter([
 	{
@@ -27,9 +28,16 @@ const router = createBrowserRouter([
 		path: '/chats',
 		element: (
 			<Layout>
+				<Outlet />
 				<Chats />
 			</Layout>
 		),
+		children: [
+			{
+				path: '/chats/create',
+				element: <ChatCreate />,
+			},
+		],
 	},
 
 	{

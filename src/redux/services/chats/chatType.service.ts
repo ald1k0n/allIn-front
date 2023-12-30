@@ -7,14 +7,17 @@ export const chatTypeApi = createApi({
 	baseQuery: baseQueryReAuth,
 	tagTypes: ['ChatType'],
 	endpoints: (builder) => ({
-		getChatType: builder.query<IChatTypeModel[], void>({
+		getChatType: builder.query<{ chatTypes: IChatTypeModel[] }, void>({
 			query: () => ({
 				url: '/chat-types',
 			}),
 			providesTags: (result) =>
 				result
 					? [
-							...result.map(({ id }) => ({ type: 'ChatType' as const, id })),
+							...result.chatTypes.map(({ id }) => ({
+								type: 'ChatType' as const,
+								id,
+							})),
 							{ type: 'ChatType', id: 'LIST' },
 					  ]
 					: [{ type: 'ChatType', id: 'LIST' }],

@@ -66,6 +66,15 @@ export const chatApi = createApi({
 			}),
 			invalidatesTags: ['Chats'],
 		}),
+
+		createChat: builder.mutation<undefined, any>({
+			query: (body) => ({
+				url: '/admin/chats',
+				method: 'POST',
+				body,
+			}),
+			invalidatesTags: ['Chats'],
+		}),
 	}),
 });
 
@@ -74,5 +83,7 @@ export const {
 	useLazyGetSavedChatsQuery,
 	useLazyGetSubscribedChatsQuery,
 	useUpdateChatMutation,
-	useDeleteChatMutation
+	useDeleteChatMutation,
+
+	useCreateChatMutation,
 } = chatApi;

@@ -19,7 +19,7 @@ export const Button: FC<IProps> = (props) => {
 	return (
 		<button
 			{...props}
-			className={`w-full text-xs md:text-base rounded-3xl px-1 py-0.5  md:px-4 md:py-1.5 font-bold transition-colors border-2 border-primary ${
+			className={`w-full text-xs md:text-base rounded-3xl px-1 py-0.5  md:px-4 md:py-1.5 font-bold transition-colors border-2 disabled:bg-opacity-50 disabled:cursor-not-allowed border-primary ${
 				buttonStyles[props.styles]
 			}`}>
 			{props.children}

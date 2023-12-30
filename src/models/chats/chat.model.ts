@@ -13,7 +13,7 @@ export interface IChatModel {
 	location_id?: number;
 	location?: ILocationModel;
 	sub_chats?: ISubChatModel[];
-	is_personal?: boolean;
+	isPersonal?: boolean;
 }
 
 export const ChatCategories: { [index: string]: string } = {

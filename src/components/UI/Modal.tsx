@@ -8,7 +8,7 @@ interface IProps {
 
 export const Modal: FC<IProps> = ({ children, setIsOpen }) => {
 	return (
-		<div className='w-full flex justify-center items-center min-h-screen bg-black bg-opacity-45 fixed top-0'>
+		<div className='w-full z-50 left-0 flex justify-center items-center min-h-screen bg-black bg-opacity-45 fixed top-0'>
 			<div className='px-3 py-2.5 bg-white rounded-md'>
 				<div className='w-full flex justify-end'>
 					<RxCross1
