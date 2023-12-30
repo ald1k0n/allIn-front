@@ -7,7 +7,7 @@ export const chatApi = createApi({
 	baseQuery: baseQueryReAuth,
 	tagTypes: ['Chats', 'Saved', 'Subscribed'],
 	endpoints: (builder) => ({
-		getChats: builder.query<{ data: IChatModel[] }, void>({
+		getChats: builder.query<{ data: IChatModel[]; count?: number }, void>({
 			query: () => ({
 				url: '/admin/chats',
 			}),

@@ -38,7 +38,7 @@ export const Header: FC<IProps> = ({ children }) => {
 
 				<div className='h-full hidden md:flex items-center gap-3'>
 					<div className='text-base'>
-						{user ? user.name.toUpperCase() : 'username'}
+						{user ? user?.name?.toUpperCase() : 'username'}
 					</div>
 
 					<div className='h-full p-2'>

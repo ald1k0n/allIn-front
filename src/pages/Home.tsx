@@ -26,7 +26,7 @@ export default function Home() {
 
 	useEffect(() => {
 		const labels = usersData?.data?.map((user) =>
-			format(new Date(user.createdAt), 'dd/MM/yyyy')
+			format(new Date(user.createdAt!), 'dd/MM/yyyy')
 		);
 
 		const counts = labels?.reduce((acc: any, label) => {

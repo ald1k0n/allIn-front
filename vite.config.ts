@@ -9,20 +9,23 @@ export default defineConfig({
 		port: 3000,
 		open: true,
 	},
-	build: {
-		rollupOptions: {
-			output: [
-				{
-					preserveModules: true,
-					preserveModulesRoot: 'src',
-					dir: 'dist',
-				},
-			],
-		},
-	},
+	// build: {
+	// 	rollupOptions: {
+	// 		output: [
+	// 			{
+	// 				preserveModules: true,
+	// 				preserveModulesRoot: 'src',
+	// 				dir: 'dist',
+	// 			},
+	// 		],
+	// 	},
+	// },
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src'),
 		},
+	},
+	preview: {
+		port: 3000,
 	},
 });
