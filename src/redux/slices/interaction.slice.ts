@@ -2,10 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface init {
 	isOpen: boolean;
+	userProfileName?: string;
 }
 
 const initialState: init = {
 	isOpen: false,
+	userProfileName: undefined,
 };
 
 const interactionSlice = createSlice({
@@ -15,8 +17,11 @@ const interactionSlice = createSlice({
 		toggleOpen: (state) => {
 			state.isOpen = !state.isOpen;
 		},
+		setUserProfile: (state, action) => {
+			state.userProfileName = action.payload;
+		},
 	},
 });
 
 export default interactionSlice.reducer;
-export const { toggleOpen } = interactionSlice.actions;
+export const { toggleOpen, setUserProfile } = interactionSlice.actions;

@@ -172,7 +172,10 @@ export default function Chats() {
 	return (
 		<>
 			<main className='w-full flex gap-y-4 gap-4 justify-center md:justify-normal flex-wrap'>
-				<div className='w-full flex justify-end'>
+				<div className='w-full flex justify-between'>
+					<div className='text-xl'>
+						Количество чатов: {initialChat?.length ? initialChat.length : 0}
+					</div>
 					<Link to='/chats/create'>
 						<Button styles='default'>Создать чат!</Button>
 					</Link>
@@ -220,7 +223,10 @@ export default function Chats() {
 									type='radio'
 									name='chatType'
 									defaultChecked
-									onChange={(e) => setChatType(e.target.value)}
+									onChange={(e) => {
+										setChatType(e.target.value);
+										// setCurrentUser(null);
+									}}
 									value=''
 								/>
 							</div>

@@ -13,9 +13,10 @@ export default defineConfig({
 	// 	rollupOptions: {
 	// 		output: [
 	// 			{
-	// 				preserveModules: true,
-	// 				preserveModulesRoot: 'src',
+	// 				// preserveModules: true,
+	// 				// preserveModulesRoot: 'src',
 	// 				dir: 'dist',
+
 	// 			},
 	// 		],
 	// 	},

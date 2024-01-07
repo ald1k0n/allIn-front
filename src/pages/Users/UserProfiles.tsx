@@ -3,9 +3,11 @@ import { FcLike } from 'react-icons/fc';
 
 import { useGetProfilesQuery } from '@/redux/services';
 import { Loader, Card } from '@/components';
+import { useAppSelector } from '@/hooks';
 
 export default function UserProfiles() {
 	const { id } = useParams();
+	const { userProfileName } = useAppSelector((state) => state.interaction);
 
 	const { data: profiles, isLoading } = useGetProfilesQuery(Number(id));
 
@@ -19,7 +21,7 @@ export default function UserProfiles() {
 				<div className='border-r-2 border-gray-400 pr-3'>
 					Общее количество профилей: {profiles?.profiles.length}{' '}
 				</div>
-				<div>Пользователя: {profiles?.profiles[0]?.user.name}</div>
+				<div>Пользователя: {userProfileName}</div>
 			</div>
 
 			<div className='w-full mt-2 p-2 flex gap-2.5 flex-wrap'>

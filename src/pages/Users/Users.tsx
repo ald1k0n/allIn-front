@@ -5,17 +5,20 @@ import { useState, useRef } from 'react';
 
 import { Button, Loader, Modal, Table, Input } from '@/components';
 import { IUser } from '@/models';
+import { useAppDispatch } from '@/hooks';
 import {
 	useGetUsersQuery,
 	useUpdateUsersMutation,
 	useDeleteUserMutation,
 } from '@/redux/services';
+import { setUserProfile } from '@/redux/slices/interaction.slice';
 
 export default function Users() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [rowData, setRowData] = useState<IUser>();
 	const [user, setUser] = useState(rowData);
 	const [file, setFile] = useState(null);
+	const dispatch = useAppDispatch();
 
 	const { data: users, isLoading: isLoadingUsers } = useGetUsersQuery();
 	const [updateUser] = useUpdateUsersMutation();
@@ -57,7 +60,13 @@ export default function Users() {
 					<div className='w-full flex justify-center'>
 						<div className='w-2/3'>
 							<Link to={`/users/${row.original.id}`}>
-								<Button styles='outline'>Открыть профиль</Button>
+								<Button
+									onClick={() => {
+										dispatch(setUserProfile(row.original.name));
+									}}
+									styles='outline'>
+									Открыть профиль
+								</Button>
 							</Link>
 						</div>
 					</div>
@@ -138,7 +147,8 @@ export default function Users() {
 	return (
 		<>
 			<main className='w-full flex gap-y-4 gap-4 justify-center md:justify-normal flex-wrap'>
-				<div className='w-full flex justify-end'>
+				<div className='w-full flex justify-between'>
+					<div>Количество аккаунтов {users?.count}</div>
 					<Link to='/users/create'>
 						<Button styles='default'>Создать пользователя</Button>
 					</Link>
