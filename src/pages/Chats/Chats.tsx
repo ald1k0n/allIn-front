@@ -176,9 +176,14 @@ export default function Chats() {
 					<div className='text-xl'>
 						Количество чатов: {initialChat?.length ? initialChat.length : 0}
 					</div>
-					<Link to='/chats/create'>
-						<Button styles='default'>Создать чат!</Button>
-					</Link>
+					<div className={'flex gap-1.5'}>
+						<Link to='/chats/location/create'>
+							<Button styles='default'>Создать локацию!</Button>
+						</Link>
+						<Link to='/chats/create'>
+							<Button styles='default'>Создать чат!</Button>
+						</Link>
+					</div>
 				</div>
 				{loadingUsers ? (
 					<Loader />

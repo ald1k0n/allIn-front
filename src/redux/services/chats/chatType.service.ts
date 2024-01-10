@@ -22,7 +22,38 @@ export const chatTypeApi = createApi({
 					  ]
 					: [{ type: 'ChatType', id: 'LIST' }],
 		}),
+		updateChatType: builder.mutation<undefined, any>({
+			query: (body) => {
+				return {
+					url: `/chat-types/${body.id}`,
+					method: 'PATCH',
+					body,
+				};
+			},
+			invalidatesTags: ['ChatType'],
+		}),
+		deleteChatType: builder.mutation<undefined, number>({
+			query: (id) => ({
+				url: `/chat-types/${id}`,
+				method: 'DELETE',
+			}),
+			invalidatesTags: ['ChatType'],
+		}),
+
+		createChatType: builder.mutation<undefined, any>({
+			query: (body) => ({
+				url: '/chat-types',
+				method: 'POST',
+				body,
+			}),
+			invalidatesTags: ['ChatType'],
+		}),
 	}),
 });
 
-export const { useGetChatTypeQuery } = chatTypeApi;
+export const {
+	useGetChatTypeQuery,
+	useCreateChatTypeMutation,
+	useDeleteChatTypeMutation,
+	useUpdateChatTypeMutation,
+} = chatTypeApi;

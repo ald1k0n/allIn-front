@@ -22,7 +22,38 @@ export const locationApi = createApi({
 					  ]
 					: [{ type: 'Locations', id: 'LIST' }],
 		}),
+		updateLocation: builder.mutation<undefined, any>({
+			query: (body) => {
+				return {
+					url: `/locations/${body.get('id')}`,
+					method: 'PATCH',
+					body,
+				};
+			},
+			invalidatesTags: ['Locations'],
+		}),
+		deleteLocation: builder.mutation<undefined, number>({
+			query: (id) => ({
+				url: `/locations/${id}`,
+				method: 'DELETE',
+			}),
+			invalidatesTags: ['Locations'],
+		}),
+
+		createLocation: builder.mutation<undefined, any>({
+			query: (body) => ({
+				url: '/locations',
+				method: 'POST',
+				body,
+			}),
+			invalidatesTags: ['Locations'],
+		}),
 	}),
 });
 
-export const { useGetLocationsQuery } = locationApi;
+export const {
+	useGetLocationsQuery,
+	useCreateLocationMutation,
+	useDeleteLocationMutation,
+	useUpdateLocationMutation,
+} = locationApi;

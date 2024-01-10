@@ -14,6 +14,9 @@ const UserProfiles = lazy(() => import('@/pages/Users/UserProfiles'));
 const UserCreate = lazy(() => import('@/pages/Users/UserCreate'));
 const Chats = lazy(() => import('@/pages/Chats/Chats'));
 const ChatCreate = lazy(() => import('@/pages/Chats/ChatCreate'));
+const LocationCreate = lazy(() => import('@/pages/Locations/LocationCreate'));
+const ChatTypes = lazy(() => import('@/pages/Chats/ChatTypes.tsx'));
+const ChatTypeCreate = lazy(() => import('@/pages/Chats/ChatTypeCreate.tsx'));
 
 const router = createBrowserRouter([
 	{
@@ -33,6 +36,10 @@ const router = createBrowserRouter([
 			</Layout>
 		),
 		children: [
+			{
+				path: '/chats/location/create',
+				element: <LocationCreate />,
+			},
 			{
 				path: '/chats/create',
 				element: <ChatCreate />,
@@ -62,6 +69,21 @@ const router = createBrowserRouter([
 	{
 		path: '/login',
 		element: <Login />,
+	},
+	{
+		path: '/categories',
+		element: (
+			<Layout>
+				<Outlet />
+				<ChatTypes />
+			</Layout>
+		),
+		children: [
+			{
+				path: '/categories/create',
+				element: <ChatTypeCreate />,
+			},
+		],
 	},
 ]);
 

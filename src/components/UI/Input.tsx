@@ -1,6 +1,7 @@
 import { DetailedHTMLProps, InputHTMLAttributes, FC } from 'react';
 
 enum size {
+	small = 'h-4',
 	base = 'h-6',
 	medium = 'h-8',
 	large = 'h-10',
@@ -13,7 +14,7 @@ interface IProps
 	> {
 	label?: string;
 	label_color?: string;
-	input_size?: 'base' | 'medium' | 'large';
+	input_size?: 'small' | 'base' | 'medium' | 'large';
 }
 
 export const Input: FC<IProps> = (props) => {
