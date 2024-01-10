@@ -5,7 +5,7 @@ import { logout } from '@/redux/slices/user.slice';
 import { FC } from 'react';
 
 import { Button, SideButtons } from '..';
-import { MdCategory } from 'react-icons/md';
+import {MdCategory} from "react-icons/md";
 
 interface IProps {
 	isOpen?: boolean;
@@ -18,7 +18,7 @@ export const Sidebar: FC<IProps> = ({ isOpen }) => {
 			className={`min-h-screen ${
 				!isOpen ? 'hidden' : 'block'
 			} bg-orange-400 md:block w-32 text-white `}>
-			<div className='mx-3 my-16 flex flex-col gap-y-3 items-center'>
+			<div className='mx-3 my-16 flex flex-col gap-y-3 items-center fixed'>
 				<SideButtons
 					link='/'
 					routename='Главная страница'>
@@ -40,7 +40,7 @@ export const Sidebar: FC<IProps> = ({ isOpen }) => {
 					<MdCategory className='text-white text-3xl' />
 				</SideButtons>
 
-				<div className='absolute bottom-12'>
+				<div className='flex items-center justify-center bottom-12'>
 					<Button
 						onClick={() => dispatch(logout())}
 						styles='logout'>
