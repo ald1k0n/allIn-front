@@ -1,58 +1,13 @@
-import { useState, useEffect } from 'react';
-import { format } from 'date-fns';
-
-import { Card, Loader, LineGraph } from '@/components';
+import { Card, Loader, LineGraph, PieChart } from '@/components';
 import { useGetUsersQuery, useGetChatsQuery } from '@/redux/services';
+import { useGetLineData, useGetPieData } from '@/hooks';
 
-interface Data {
-	labels: string[];
-	data:
-		| {
-				data: number[];
-				label: string;
-				borderColor: string;
-				backgroundColor: string;
-		  }[]
-		| null;
-}
 export default function Home() {
 	const { data: usersData, isLoading: isUserLoading } = useGetUsersQuery();
 	const { data: chatData, isLoading: isChatLoading } = useGetChatsQuery();
 
-	const [data, setData] = useState<Data>({
-		data: [],
-		labels: [],
-	});
-
-	useEffect(() => {
-		const labels = usersData?.data?.map((user) =>
-			format(new Date(user.createdAt!), 'dd/MM/yyyy')
-		);
-
-		const counts = labels?.reduce((acc: any, label) => {
-			acc[label] = (acc[label] || 0) + 1;
-			return acc;
-		}, {});
-
-		setData((prev) => ({
-			...prev,
-			labels: Object.keys(counts || {}),
-			data: [
-				{
-					data: Object.values(counts || {}),
-					label: 'Кол. зарегистрированных',
-					borderColor: '#d1001f',
-					backgroundColor: '#ff2c2c',
-				},
-			],
-		}));
-		return () => {
-			setData({
-				data: [],
-				labels: [],
-			});
-		};
-	}, [usersData]);
+	const { pieData } = useGetPieData();
+	const { userData } = useGetLineData();
 
 	return (
 		<main className='w-full flex gap-y-4 gap-4 justify-center md:justify-normal flex-wrap'>
@@ -95,8 +50,25 @@ export default function Home() {
 							</div>
 							<div className='w-full h-full'>
 								<LineGraph
-									data={data.data!}
-									labels={data.labels}
+									data={userData.data!}
+									labels={userData.labels}
+								/>
+							</div>
+						</div>
+					</Card>
+
+					<Card>
+						<div className='flex w-72  flex-col h-80'>
+							<div className='w-full text-lg text-center'>
+								Пользователи по локациям:
+							</div>
+							<div className='w-full h-full'>
+								<PieChart
+									data={pieData.data}
+									labels={pieData.labels}
+									label='Локации'
+									backgroundColor={pieData.colors}
+									borderColor={pieData.colors}
 								/>
 							</div>
 						</div>

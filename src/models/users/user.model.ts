@@ -7,6 +7,10 @@ export interface IUser {
 	createdAt?: string;
 	location_id?: number;
 	device_token?: string;
+	location?: {
+		id?: number;
+		name?: string;
+	};
 }
 
 export interface ILogin {
