@@ -6,6 +6,8 @@ import { Layout } from '@/components/UI/Layout';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { getMe } from '@/redux/slices/user.slice';
 import { Loader } from '@/components';
+import ChatTypes from "@/pages/Chats/ChatTypes.tsx";
+import ChatTypeCreate from "@/pages/Chats/ChatTypeCreate.tsx";
 
 const Home = lazy(() => import('@/pages/Home'));
 const Login = lazy(() => import('@/pages/Login'));
@@ -14,6 +16,7 @@ const UserProfiles = lazy(() => import('@/pages/Users/UserProfiles'));
 const UserCreate = lazy(() => import('@/pages/Users/UserCreate'));
 const Chats = lazy(() => import('@/pages/Chats/Chats'));
 const ChatCreate = lazy(() => import('@/pages/Chats/ChatCreate'));
+const LocationCreate = lazy(() => import('@/pages/Locations/LocationCreate'))
 
 const router = createBrowserRouter([
 	{
@@ -33,6 +36,10 @@ const router = createBrowserRouter([
 			</Layout>
 		),
 		children: [
+			{
+				path: '/chats/location/create',
+				element: <LocationCreate />
+			},
 			{
 				path: '/chats/create',
 				element: <ChatCreate />,
@@ -56,6 +63,21 @@ const router = createBrowserRouter([
 			{
 				path: '/users/create',
 				element: <UserCreate />,
+			},
+		],
+	},
+	{
+		path: '/categories',
+		element: (
+			<Layout>
+				<Outlet />
+				<ChatTypes />
+			</Layout>
+		),
+		children: [
+			{
+				path: '/categories/create',
+				element: <ChatTypeCreate />,
 			},
 		],
 	},

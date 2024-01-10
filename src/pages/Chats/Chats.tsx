@@ -173,9 +173,14 @@ export default function Chats() {
 		<>
 			<main className='w-full flex gap-y-4 gap-4 justify-center md:justify-normal flex-wrap'>
 				<div className='w-full flex justify-end'>
-					<Link to='/chats/create'>
-						<Button styles='default'>Создать чат!</Button>
-					</Link>
+					<div className={'flex gap-1.5'}>
+						<Link to='/chats/location/create'>
+							<Button styles='default'>Создать локацию!</Button>
+						</Link>
+						<Link to='/chats/create'>
+							<Button styles='default'>Создать чат!</Button>
+						</Link>
+					</div>
 				</div>
 				{loadingUsers ? (
 					<Loader />

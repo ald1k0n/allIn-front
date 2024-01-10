@@ -5,6 +5,7 @@ import { logout } from '@/redux/slices/user.slice';
 import { FC } from 'react';
 
 import { Button, SideButtons } from '..';
+import {MdCategory} from "react-icons/md";
 
 interface IProps {
 	isOpen?: boolean;
@@ -32,6 +33,11 @@ export const Sidebar: FC<IProps> = ({ isOpen }) => {
 					link='/chats'
 					routename='Чаты'>
 					<HiChatBubbleBottomCenter className='text-white text-3xl' />
+				</SideButtons>
+				<SideButtons
+					link='/categories'
+					routename='Категории'>
+					<MdCategory className='text-white text-3xl' />
 				</SideButtons>
 
 				<div className='absolute bottom-12'>

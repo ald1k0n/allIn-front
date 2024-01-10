@@ -19,7 +19,39 @@ export const categoryApi = createApi({
 					  ]
 					: [{ type: 'Categories', id: 'LIST' }],
 		}),
+
+		updateCategory: builder.mutation<undefined, any>({
+			query: (body) => {
+				return {
+					url: `/categories/${body.get('id')}`,
+					method: 'PATCH',
+					body,
+				};
+			},
+			invalidatesTags: ['Categories'],
+		}),
+		deleteCategory: builder.mutation<undefined, number>({
+			query: (id) => ({
+				url: `/categories/${id}`,
+				method: 'DELETE',
+			}),
+			invalidatesTags: ['Categories'],
+		}),
+
+		createCategory: builder.mutation<undefined, any>({
+			query: (body) => ({
+				url: '/categories',
+				method: 'POST',
+				body,
+			}),
+			invalidatesTags: ['Categories']
+		}),
 	}),
 });
 
-export const { useGetCategoriesQuery } = categoryApi;
+export const {
+	useGetCategoriesQuery,
+	useCreateCategoryMutation,
+	useDeleteCategoryMutation,
+	useUpdateCategoryMutation
+} = categoryApi;
