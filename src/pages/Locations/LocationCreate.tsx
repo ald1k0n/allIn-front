@@ -14,7 +14,7 @@ export default function LocationCreate() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (!isOpen) navigate('/locations');
+		if (!isOpen) navigate(-1);
 	}, [isOpen, navigate]);
 
 	const handleSubmit = async () => {
