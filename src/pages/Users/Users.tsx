@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { useState, useRef } from 'react';
+import { MdDelete, MdEdit } from 'react-icons/md';
 
 import { Button, Loader, Modal, Table, Input } from '@/components';
 import { IUser } from '@/models';
@@ -77,13 +78,13 @@ export default function Users() {
 			header: 'Удалить',
 			cell: ({ row }: { row: { original: IUser } }) => {
 				return (
-					<Button
-						onClick={() => {
-							handleDelete(row.original.id!);
-						}}
-						styles='logout'>
-						Удалить
-					</Button>
+					<div className='w-full flex justify-center'>
+						<div
+							onClick={() => handleDelete(row.original.id!)}
+							className='w-8 h-8 rounded-full bg-red-500 flex justify-center items-center'>
+							<MdDelete className='w-full text-center text-xl text-white  cursor-pointer' />
+						</div>
+					</div>
 				);
 			},
 		},
@@ -91,14 +92,16 @@ export default function Users() {
 			header: 'Изменить',
 			cell: ({ row }: { row: { original: IUser } }) => {
 				return (
-					<Button
-						onClick={() => {
-							setRowData(row.original);
-							setIsOpen(true);
-						}}
-						styles='default'>
-						Изменить
-					</Button>
+					<div className='w-full flex justify-center'>
+						<div
+							onClick={() => {
+								setRowData(row.original);
+								setIsOpen(true);
+							}}
+							className='w-8 h-8 rounded-full bg-blue-500 flex justify-center items-center'>
+							<MdEdit className='w-full text-center text-xl cursor-pointer text-white' />
+						</div>
+					</div>
 				);
 			},
 		},
