@@ -11,10 +11,12 @@ import {
 	useUpdateChatMutation,
 	useDeleteChatMutation,
 	useGetUsersQuery,
+	useGetLocationsQuery,
 } from '@/redux/services';
 import { IUser } from '@/models';
 import { IChatModel } from '@/models/chats/chat.model.ts';
 import { Link } from 'react-router-dom';
+import { MdDelete, MdEdit } from 'react-icons/md';
 
 export default function Chats() {
 	const { data: chats, isLoading } = useGetChatsQuery();
@@ -23,6 +25,8 @@ export default function Chats() {
 	const { data: users, isLoading: loadingUsers } = useGetUsersQuery();
 	const [updateChat] = useUpdateChatMutation();
 	const [deleteChat] = useDeleteChatMutation();
+	const { data: locations, isLoading: locationsLoading } =
+		useGetLocationsQuery();
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [rowData, setRowData] = useState<IChatModel>();
@@ -68,6 +72,18 @@ export default function Chats() {
 			accessorKey: 'title',
 		},
 		{
+			header: 'Местоположение',
+			accessorKey: 'location_id',
+		},
+		{
+			header: 'Чат закреплен',
+			cell: ({ row }: { row: any }) => (
+				<div>
+					{row.original.isLocationPinned ? 'Закреплен' : 'Не закреплен'}
+				</div>
+			),
+		},
+		{
 			header: 'Тип чата',
 			cell: ({ row }: { row: { original: IChatModel } }) => {
 				return <div> {row.original?.isPersonal ? 'Личный' : 'Общий'} </div>;
@@ -105,13 +121,13 @@ export default function Chats() {
 			header: 'Удалить',
 			cell: ({ row }: { row: { original: IChatModel } }) => {
 				return (
-					<Button
-						onClick={() => {
-							handleDelete(row.original.id!);
-						}}
-						styles='logout'>
-						Удалить
-					</Button>
+					<div className='w-full flex justify-center'>
+						<div
+							onClick={() => handleDelete(row.original.id!)}
+							className='w-8 h-8 rounded-full bg-red-500 flex justify-center items-center'>
+							<MdDelete className='w-full text-center text-xl text-white  cursor-pointer' />
+						</div>
+					</div>
 				);
 			},
 		},
@@ -119,14 +135,16 @@ export default function Chats() {
 			header: 'Изменить',
 			cell: ({ row }: { row: { original: IChatModel } }) => {
 				return (
-					<Button
-						onClick={() => {
-							setRowData(row.original);
-							setIsOpen(true);
-						}}
-						styles='default'>
-						Изменить
-					</Button>
+					<div className='w-full flex justify-center'>
+						<div
+							onClick={() => {
+								setRowData(row.original);
+								setIsOpen(true);
+							}}
+							className='w-8 h-8 rounded-full bg-blue-500 flex justify-center items-center'>
+							<MdEdit className='w-full text-center text-xl cursor-pointer text-white' />
+						</div>
+					</div>
 				);
 			},
 		},
@@ -167,7 +185,7 @@ export default function Chats() {
 		});
 	};
 
-	if (isLoading) return <Loader />;
+	if (isLoading && locationsLoading) return <Loader />;
 
 	return (
 		<>
@@ -211,7 +229,7 @@ export default function Chats() {
 							</select>
 						</div>
 
-						<div className='w-80 flex items-center'>
+						<div className='w-24 lg:w-80 flex items-center'>
 							<Button
 								disabled={!currentUser}
 								onClick={findChat}
@@ -299,6 +317,57 @@ export default function Chats() {
 									setFile((e.target as any).files[0]);
 									// console.log((e.target as any).files[0]);
 								}}
+							/>
+						</div>
+						<div className='w-full flex flex-col'>
+							<label
+								htmlFor='location'
+								className='w-full text-xl text-center'>
+								Местоположение
+							</label>
+							<select
+								onChange={(e) =>
+									setChat((prev) => {
+										return {
+											...prev,
+											location_id: Number(e.target.value) as number,
+										} as IChatModel;
+									})
+								}
+								id='location'
+								className='w-full outline-none border-2'>
+								<option
+									value=''
+									disabled
+									selected>
+									Выберите местоположение
+								</option>
+								{locations?.locations.map((location) => (
+									<option
+										value={location.id}
+										key={location.id}>
+										{location.name}
+									</option>
+								))}
+							</select>
+						</div>
+						<div className='w-full flex flex-col justify-between items-center'>
+							<label
+								htmlFor='pin'
+								className='w-full text-xl text-center'>
+								Закрепить местоположение к чату?
+							</label>
+							<Input
+								id='pin'
+								type='checkbox'
+								onChange={(e) =>
+									setChat((prev) => {
+										return {
+											...prev,
+											isLocationPinned: e.target.checked,
+										} as IChatModel;
+									})
+								}
 							/>
 						</div>
 

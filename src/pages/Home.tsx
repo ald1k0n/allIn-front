@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Card, Loader, LineGraph, PieChart } from '@/components';
 import { useGetUsersQuery, useGetChatsQuery } from '@/redux/services';
-import { useGetLineData, useGetPieData } from '@/hooks';
+import { useGetChatTypeToPie, useGetLineData, useGetPieData } from '@/hooks';
 
 export default function Home() {
 	const { data: usersData, isLoading: isUserLoading } = useGetUsersQuery();
@@ -8,6 +9,7 @@ export default function Home() {
 
 	const { pieData } = useGetPieData();
 	const { userData } = useGetLineData();
+	const { data: typeChats } = useGetChatTypeToPie();
 
 	return (
 		<main className='w-full flex gap-y-4 gap-4 justify-center md:justify-normal flex-wrap'>
@@ -69,6 +71,32 @@ export default function Home() {
 									label='Локации'
 									backgroundColor={pieData.colors}
 									borderColor={pieData.colors}
+								/>
+							</div>
+						</div>
+					</Card>
+					<Card>
+						<div className='flex w-72  flex-col h-80'>
+							<div className='w-full text-lg text-center'>Чаты по типам:</div>
+							<div className='w-full h-full'>
+								<PieChart
+									data={
+										//@ts-ignore
+										typeChats.data as any[]
+									}
+									labels={
+										//@ts-ignore
+										typeChats.labels as any[]
+									}
+									label='Чаты'
+									backgroundColor={
+										//@ts-ignore
+										typeChats.colors as any[]
+									}
+									borderColor={
+										//@ts-ignore
+										typeChats.colors as any[]
+									}
 								/>
 							</div>
 						</div>
