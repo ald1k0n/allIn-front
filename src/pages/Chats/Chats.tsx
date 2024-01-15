@@ -364,7 +364,7 @@ export default function Chats() {
 									setChat((prev) => {
 										return {
 											...prev,
-											isChatPinned: e.target.checked,
+											isLocationPinned: e.target.checked,
 										} as IChatModel;
 									})
 								}
