@@ -14,6 +14,7 @@ export interface IChatModel {
 	location?: ILocationModel;
 	sub_chats?: ISubChatModel[];
 	isPersonal?: boolean;
+	isChatPinned?: boolean;
 }
 
 export const ChatCategories: { [index: string]: string } = {
