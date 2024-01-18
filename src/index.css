@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+	min-width: 0 !important;
+}
+
 .loader {
 	animation: rotate 1s infinite;
 	height: 50px;

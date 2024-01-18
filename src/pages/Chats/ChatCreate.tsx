@@ -93,6 +93,25 @@ export default function ChatCreate() {
 						))}
 					</select>
 				</div>
+				<div className='w-full flex justify-between items-center'>
+					<label
+						htmlFor='pin'
+						className='w-full text-md text-center'>
+						Закрепить местоположение к чату?
+					</label>
+					<input
+						type='checkbox'
+						id='pin'
+						onChange={(e) =>
+							setChatData((prev) => {
+								return {
+									...prev,
+									isLocationPinned: e.target.checked,
+								} as IChatModel;
+							})
+						}
+					/>
+				</div>
 				<div className='w-full'>
 					<label htmlFor='type'>Тип чата</label>
 					<select
