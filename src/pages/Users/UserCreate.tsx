@@ -20,11 +20,16 @@ export default function UserCreate() {
 	if (isLoading) return <Loader />;
 
 	const handleSubmit = async () => {
+		const phonePattern = /[+]\d{11}/;
+		console.log(!phonePattern.test(userData?.phone as string));
+		if (!phonePattern.test(userData?.phone as string)) {
+			toast.error('Некорректный номер телефона');
+		}
 		const values = {
 			...userData,
 			device_token: '0001',
 		};
-		// console.log(values);
+
 		await toast
 			.promise(createUser(values).unwrap(), {
 				success: 'Пользователь успешно создан',
@@ -36,10 +41,14 @@ export default function UserCreate() {
 
 	return (
 		<Modal setIsOpen={setIsOpen}>
-			<div className='w-80 flex flex-col gap-y-2'>
+			<div className='w-80 flex flex-col gap-y-4'>
 				<Input
+					autoComplete='phone'
+					pattern={`[+]\d{11}`}
+					title='Номер телефона'
+					required
 					label='Номер телефона'
-					placeholder='+77058743762'
+					placeholder='+77777777777'
 					input_size='large'
 					onChange={(e) =>
 						setUserData((prev) => ({

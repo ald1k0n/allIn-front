@@ -92,7 +92,7 @@ export default function Chats() {
 					<div>
 						{
 							chatTypes?.chatTypes.find(
-								(type) => type.id === row.original?.type_id
+								(type: any) => type.id === row.original?.type_id
 							)?.title
 						}
 					</div>
@@ -206,10 +206,10 @@ export default function Chats() {
 					</div>
 					<div className={'flex gap-1.5'}>
 						<Link to='/chats/location/create'>
-							<Button styles='default'>Создать локацию!</Button>
+							<Button styles='default'>Создать локацию</Button>
 						</Link>
 						<Link to='/chats/create'>
-							<Button styles='default'>Создать чат!</Button>
+							<Button styles='default'>Создать чат</Button>
 						</Link>
 					</div>
 				</div>
@@ -294,7 +294,7 @@ export default function Chats() {
 			</main>
 			{isOpen && (
 				<Modal setIsOpen={setIsOpen}>
-					<div className='p-3 flex flex-col gap-y-1 w-80'>
+					<div className='p-3 flex flex-col gap-y-4 w-80'>
 						<div className='text-center text-lg'>Название {rowData?.title}</div>
 						<Input
 							input_size={'medium'}
@@ -306,31 +306,12 @@ export default function Chats() {
 							label={'Название'}
 						/>
 
-						<div>
-							<label
-								htmlFor='photo'
-								className={`text-lg font-medium text-color`}>
-								Лого
-							</label>
-
-							<Button
-								disabled={!!file}
-								onClick={() => (fileRef?.current as any)?.click()}
-								styles='outline'>
-								Загрузить лого
-							</Button>
-							<input
-								type='file'
-								hidden
-								ref={fileRef}
-								onChange={(e) => {
-									setFile((e.target as any).files[0]);
-									// console.log((e.target as any).files[0]);
-								}}
-							/>
-						</div>
 						<div className='w-full'>
-							<label htmlFor='type'>Тип чата</label>
+							<label
+								htmlFor='type'
+								className='text-lg font-medium'>
+								Тип чата
+							</label>
 							<select
 								onChange={(e) => {
 									//@ts-ignore
@@ -356,7 +337,7 @@ export default function Chats() {
 						<div className='w-full flex flex-col'>
 							<label
 								htmlFor='location'
-								className='w-full text-xl text-center'>
+								className='w-full text-lg font-medium'>
 								Местоположение
 							</label>
 							<select
@@ -388,8 +369,8 @@ export default function Chats() {
 						<div className='w-full flex justify-between items-center'>
 							<label
 								htmlFor='pin'
-								className='w-full text-md text-center'>
-								Закрепить местоположение к чату?
+								className='w-full text-lg text-wrap font-medium'>
+								Закрепить локацию?
 							</label>
 							<input
 								type='checkbox'
@@ -404,7 +385,29 @@ export default function Chats() {
 								}
 							/>
 						</div>
+						<div>
+							<label
+								htmlFor='photo'
+								className={`text-lg font-medium`}>
+								Лого
+							</label>
 
+							<Button
+								disabled={!!file}
+								onClick={() => (fileRef?.current as any)?.click()}
+								styles='outline'>
+								Загрузить лого
+							</Button>
+							<input
+								type='file'
+								hidden
+								ref={fileRef}
+								onChange={(e) => {
+									setFile((e.target as any).files[0]);
+									// console.log((e.target as any).files[0]);
+								}}
+							/>
+						</div>
 						<Button
 							styles={'default'}
 							onClick={handleUpdate}>
