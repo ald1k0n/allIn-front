@@ -12,6 +12,7 @@ import {
 	useDeleteChatMutation,
 	useGetUsersQuery,
 	useGetLocationsQuery,
+	useGetChatTypeQuery,
 } from '@/redux/services';
 import { IUser } from '@/models';
 import { IChatModel } from '@/models/chats/chat.model.ts';
@@ -27,6 +28,7 @@ export default function Chats() {
 	const [deleteChat] = useDeleteChatMutation();
 	const { data: locations, isLoading: locationsLoading } =
 		useGetLocationsQuery();
+	const { data: chatTypes, isLoading: typesLoading } = useGetChatTypeQuery();
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [rowData, setRowData] = useState<IChatModel>();
@@ -86,7 +88,15 @@ export default function Chats() {
 		{
 			header: 'Тип чата',
 			cell: ({ row }: { row: { original: IChatModel } }) => {
-				return <div> {row.original?.isPersonal ? 'Личный' : 'Общий'} </div>;
+				return (
+					<div>
+						{
+							chatTypes?.chatTypes.find(
+								(type) => type.id === row.original?.type_id
+							)?.title
+						}
+					</div>
+				);
 			},
 		},
 		{
@@ -185,7 +195,7 @@ export default function Chats() {
 		});
 	};
 
-	if (isLoading && locationsLoading) return <Loader />;
+	if (isLoading || locationsLoading || typesLoading) return <Loader />;
 
 	return (
 		<>
@@ -319,6 +329,30 @@ export default function Chats() {
 								}}
 							/>
 						</div>
+						<div className='w-full'>
+							<label htmlFor='type'>Тип чата</label>
+							<select
+								onChange={(e) => {
+									//@ts-ignore
+									setChat((prev) => ({ ...prev, type_id: e.target.value }));
+								}}
+								id='type'
+								className='w-full h-8 border'>
+								<option
+									value=''
+									selected
+									disabled>
+									Выберите тип чата
+								</option>
+								{chatTypes?.chatTypes.map((type) => (
+									<option
+										value={type.id}
+										key={type.id}>
+										{type.title}
+									</option>
+								))}
+							</select>
+						</div>
 						<div className='w-full flex flex-col'>
 							<label
 								htmlFor='location'
@@ -351,15 +385,15 @@ export default function Chats() {
 								))}
 							</select>
 						</div>
-						<div className='w-full flex flex-col justify-between items-center'>
+						<div className='w-full flex justify-between items-center'>
 							<label
 								htmlFor='pin'
-								className='w-full text-xl text-center'>
+								className='w-full text-md text-center'>
 								Закрепить местоположение к чату?
 							</label>
-							<Input
-								id='pin'
+							<input
 								type='checkbox'
+								id='pin'
 								onChange={(e) =>
 									setChat((prev) => {
 										return {
