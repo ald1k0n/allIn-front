@@ -4,8 +4,12 @@ import {
 	SortingState,
 	useReactTable,
 	flexRender,
+	getPaginationRowModel,
+	getFilteredRowModel,
 } from '@tanstack/react-table';
 import { useState, FC, useMemo } from 'react';
+import { GrNext, GrPrevious } from 'react-icons/gr';
+import { Input } from '.';
 
 interface IProps {
 	data: Array<any>;
@@ -14,6 +18,7 @@ interface IProps {
 
 export const Table: FC<IProps> = ({ data = [], columns = [] }) => {
 	const [sorting, setSorting] = useState<SortingState>([]);
+	const [search, setSearch] = useState<string>('');
 
 	const cols = useMemo(() => columns, [columns]);
 
@@ -22,14 +27,26 @@ export const Table: FC<IProps> = ({ data = [], columns = [] }) => {
 		columns: cols,
 		state: {
 			sorting,
+			globalFilter: search,
 		},
 		onSortingChange: setSorting,
 		getCoreRowModel: getCoreRowModel(),
 		getSortedRowModel: getSortedRowModel(),
+		getFilteredRowModel: getFilteredRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
+		onGlobalFilterChange: setSearch,
 	});
 
 	return (
-		<div className='w-full p-3 overflow-auto'>
+		<div className='w-full p-3 overflow-auto flex items-center gap-y-3 flex-col'>
+			<div className='w-80'>
+				<Input
+					input_size='medium'
+					type='search'
+					placeholder='Поиск'
+					onChange={(e) => setSearch(e.target.value)}
+				/>
+			</div>
 			<table className='w-full border'>
 				<thead className='bg-gray-300'>
 					{table.getHeaderGroups().map((headerGroup) => (
@@ -79,6 +96,42 @@ export const Table: FC<IProps> = ({ data = [], columns = [] }) => {
 					})}
 				</tbody>
 			</table>
+			<div className='w-full flex justify-between mt-3'>
+				<div>
+					<span className='flex items-center gap-1'>
+						<div>Страница</div>
+						<strong>
+							{table.getState().pagination.pageIndex + 1} из{' '}
+							{table.getPageCount()}
+						</strong>
+					</span>
+				</div>
+				<div className='flex gap-2'>
+					<div className='w-42'>
+						<button
+							disabled={table.getState().pagination.pageIndex === 0}
+							onClick={() => table.previousPage()}
+							className='w-12 h-12 disabled:bg-orange-200 bg-orange-400 rounded-full flex justify-center items-center'>
+							{
+								<GrPrevious className='text-white text-center text-xl font-medium' />
+							}
+						</button>
+					</div>
+					<div className='w-42'>
+						<button
+							disabled={
+								table.getState().pagination.pageIndex ===
+								table.getPageCount() - 1
+							}
+							onClick={() => table.nextPage()}
+							className='w-12 h-12 disabled:bg-orange-200 bg-orange-400 rounded-full flex justify-center items-center'>
+							{
+								<GrNext className='text-white text-center text-xl font-medium' />
+							}
+						</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 };
