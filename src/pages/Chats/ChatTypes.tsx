@@ -111,7 +111,10 @@ export default function ChatTypes() {
 	return (
 		<>
 			<main className='w-full flex gap-y-4 gap-4 justify-center md:justify-normal flex-wrap'>
-				<div className='w-full flex justify-end'>
+				<div className='w-full flex justify-between'>
+					<div className='text-xl'>
+						Количество категории {chatTypes?.chatTypes.length}
+					</div>
 					<Link to='/categories/create'>
 						<Button styles='default'>Создать категорию</Button>
 					</Link>

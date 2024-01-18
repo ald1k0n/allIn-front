@@ -3,8 +3,9 @@ import { NavLink } from 'react-router-dom';
 
 interface IProps {
 	children: ReactNode;
-	link: string;
+	link?: string;
 	routename: string;
+	onClick?: () => void;
 }
 
 enum LINK_STATUS {
@@ -12,15 +13,22 @@ enum LINK_STATUS {
 	inactive = 'hover:bg-orange-300',
 }
 
-export const SideButtons: FC<IProps> = ({ children, link, routename }) => {
+export const SideButtons: FC<IProps> = ({
+	children,
+	link,
+	routename,
+	onClick,
+}) => {
 	const [isHovering, setIsHovering] = useState(false);
 
 	return (
-		<div className='relative group flex items-center'>
+		<div
+			onClick={onClick && onClick}
+			className='relative group flex items-center'>
 			<NavLink
 				onMouseEnter={() => setIsHovering(true)}
 				onMouseLeave={() => setIsHovering(false)}
-				to={link}
+				to={link!}
 				className={({ isActive }) =>
 					`w-16 h-16 flex justify-center rounded-2xl items-center ${
 						isActive ? LINK_STATUS.active : LINK_STATUS.inactive
