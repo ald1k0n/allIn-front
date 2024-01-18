@@ -66,7 +66,7 @@ export default function Users() {
 										dispatch(setUserProfile(row.original.name));
 									}}
 									styles='outline'>
-									Открыть профиль
+									Открыть
 								</Button>
 							</Link>
 						</div>
@@ -151,7 +151,7 @@ export default function Users() {
 		<>
 			<main className='w-full flex gap-y-4 gap-4 justify-center md:justify-normal flex-wrap'>
 				<div className='w-full flex justify-between'>
-					<div>Количество аккаунтов {users?.count}</div>
+					<div className='text-xl'>Количество аккаунтов {users?.count}</div>
 					<Link to='/users/create'>
 						<Button styles='default'>Создать пользователя</Button>
 					</Link>
@@ -163,7 +163,7 @@ export default function Users() {
 			</main>
 			{isOpen && (
 				<Modal setIsOpen={setIsOpen}>
-					<div className='p-3 flex flex-col gap-y-1 w-80'>
+					<div className='p-3 flex flex-col gap-y-4 w-80'>
 						<div className='text-center text-lg'>
 							Пользователь {rowData?.name}
 						</div>

@@ -52,7 +52,7 @@ export default function ChatCreate() {
 
 	return (
 		<Modal setIsOpen={setIsOpen}>
-			<div className='p-3 flex flex-col gap-y-1.5'>
+			<div className='p-3 flex flex-col gap-y-4'>
 				<div className='text-center text-xl'>Создать чат!</div>
 				<Input
 					label='Название чата'
@@ -66,7 +66,11 @@ export default function ChatCreate() {
 					}
 				/>
 				<div className='w-full'>
-					<label htmlFor='location'>Местоположение</label>
+					<label
+						htmlFor='location'
+						className='text-lg font-medium'>
+						Местоположение
+					</label>
 					<select
 						onChange={(e) => {
 							//@ts-ignore
@@ -96,8 +100,8 @@ export default function ChatCreate() {
 				<div className='w-full flex justify-between items-center'>
 					<label
 						htmlFor='pin'
-						className='w-full text-md text-center'>
-						Закрепить местоположение к чату?
+						className='w-full text-md text-lg font-medium'>
+						Закрепить локацию?
 					</label>
 					<input
 						type='checkbox'
@@ -113,7 +117,11 @@ export default function ChatCreate() {
 					/>
 				</div>
 				<div className='w-full'>
-					<label htmlFor='type'>Тип чата</label>
+					<label
+						htmlFor='type'
+						className='text-lg font-medium'>
+						Тип чата
+					</label>
 					<select
 						onChange={(e) => {
 							//@ts-ignore
@@ -137,7 +145,11 @@ export default function ChatCreate() {
 					</select>
 				</div>
 				<div className='w-full'>
-					<label htmlFor='type'>Изображение</label>
+					<label
+						htmlFor='type'
+						className='text-lg font-medium'>
+						Изображение
+					</label>
 					<Button
 						onClick={() => fileRef.current.click()}
 						styles='outline'>

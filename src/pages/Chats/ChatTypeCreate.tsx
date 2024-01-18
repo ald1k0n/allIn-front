@@ -29,10 +29,10 @@ export default function ChatTypeCreate() {
 
 	return (
 		<Modal setIsOpen={setIsOpen}>
-			<div className='w-80 flex flex-col gap-y-2'>
+			<div className='w-80 flex flex-col gap-y-4'>
 				<Input
-					label='Название'
-					placeholder='Название'
+					label='Категория'
+					placeholder='Категория'
 					input_size='large'
 					onChange={(e) =>
 						setChatTypeData((prev) => ({

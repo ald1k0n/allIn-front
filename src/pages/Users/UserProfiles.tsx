@@ -17,13 +17,13 @@ export default function UserProfiles() {
 	}
 
 	if (profiles?.profiles.length === 0) {
-		return <div className='w-full text-center'>Профили не найдены</div>;
+		return <div className='w-full text-center'>Бизнес страницы не найдены</div>;
 	} else
 		return (
 			<main className='w-full p-3'>
 				<div className='w-full flex gap-3'>
 					<div className='border-r-2 border-gray-400 pr-3'>
-						Общее количество профилей: {profiles?.profiles.length}{' '}
+						Общее количество бизнес страниц: {profiles?.profiles.length}{' '}
 					</div>
 					<div>Пользователя: {userProfileName}</div>
 				</div>
