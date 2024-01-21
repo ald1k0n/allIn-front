@@ -7,18 +7,19 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { getMe } from '@/redux/slices/user.slice';
 import { Loader } from '@/components';
 
-const Home = lazy(() => import('@/pages/Home'));
-const Login = lazy(() => import('@/pages/Login'));
-const Users = lazy(() => import('@/pages/Users/Users'));
-const UserProfiles = lazy(() => import('@/pages/Users/UserProfiles'));
-const UserCreate = lazy(() => import('@/pages/Users/UserCreate'));
-const Chats = lazy(() => import('@/pages/Chats/Chats'));
-const ChatCreate = lazy(() => import('@/pages/Chats/ChatCreate'));
-const LocationCreate = lazy(() => import('@/pages/Locations/LocationCreate'));
-const ChatTypes = lazy(() => import('@/pages/Chats/ChatTypes.tsx'));
-const ChatTypeCreate = lazy(() => import('@/pages/Chats/ChatTypeCreate.tsx'));
-const ErrorPage = lazy(() => import('@/pages/ErrorPage'));
-const UserProfileImages = lazy(() => import('@/pages/Users/UserProfileImages'));
+const Home = lazy(() => import('@/pages/Home')),
+	Login = lazy(() => import('@/pages/Login')),
+	Users = lazy(() => import('@/pages/Users/Users')),
+	UserProfiles = lazy(() => import('@/pages/Users/UserProfiles')),
+	UserCreate = lazy(() => import('@/pages/Users/UserCreate')),
+	Chats = lazy(() => import('@/pages/Chats/Chats')),
+	ChatCreate = lazy(() => import('@/pages/Chats/ChatCreate')),
+	LocationCreate = lazy(() => import('@/pages/Locations/LocationCreate')),
+	ChatTypes = lazy(() => import('@/pages/Chats/ChatTypes.tsx')),
+	ChatTypeCreate = lazy(() => import('@/pages/Chats/ChatTypeCreate.tsx')),
+	ErrorPage = lazy(() => import('@/pages/ErrorPage')),
+	SubChats = lazy(() => import('@/pages/Chats/SubChats')),
+	UserProfileImages = lazy(() => import('@/pages/Users/UserProfileImages'));
 
 const router = createBrowserRouter([
 	{
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
 			{
 				path: '/chats/create',
 				element: <ChatCreate />,
+			},
+			{
+				path: '/chats/:id/subchats',
+				element: <SubChats />,
 			},
 		],
 	},

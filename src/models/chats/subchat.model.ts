@@ -4,5 +4,5 @@ export interface ISubChatModel {
 	id?: number;
 	title: string;
 	chat_id: number;
-	chat: IChatModel;
+	chat?: IChatModel;
 }
