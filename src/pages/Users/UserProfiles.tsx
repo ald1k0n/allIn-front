@@ -1,14 +1,22 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { FcLike } from 'react-icons/fc';
 import { FaComments } from 'react-icons/fa';
+import { RxCross1 } from 'react-icons/rx';
+
+import { useState, useEffect } from 'react';
 
 import { useGetProfilesQuery } from '@/redux/services';
-import { Loader, Card } from '@/components';
-import { useAppSelector } from '@/hooks';
+import { Loader, Slider, Modal } from '@/components';
 
 export default function UserProfiles() {
 	const { id } = useParams();
-	const { userProfileName } = useAppSelector((state) => state.interaction);
+	const navigate = useNavigate();
+
+	const [isOpen, setIsOpen] = useState(true);
+
+	useEffect(() => {
+		if (!isOpen) navigate(-1);
+	}, [isOpen, navigate]);
 
 	const { data: profiles, isLoading } = useGetProfilesQuery(Number(id));
 
@@ -16,46 +24,52 @@ export default function UserProfiles() {
 		return <Loader />;
 	}
 
-	if (profiles?.profiles.length === 0) {
-		return <div className='w-full text-center'>Бизнес страницы не найдены</div>;
-	} else
-		return (
-			<main className='w-full p-3'>
-				<div className='w-full flex gap-3'>
-					<div className='border-r-2 border-gray-400 pr-3'>
-						Общее количество бизнес страниц: {profiles?.profiles.length}{' '}
+	const profilesArray = profiles?.profiles.map((profile) => (
+		<div
+			className='w-2/3 p-3 bg-white rounded-md flex flex-col justify-between'
+			key={profile.id}>
+			<div className='w-full flex justify-end border-b-2 py-0.5'>
+				<RxCross1
+					className='hover:text-blue-600 cursor-pointer'
+					onClick={() => navigate('/users')}
+				/>
+			</div>
+			<div className='flex justify-between items-center text-xl font-medium'>
+				<h1>{profile.name}</h1>
+				<div>
+					<div className='flex'>
+						{profile.likes.length} <FcLike />
 					</div>
-					<div>Пользователя: {userProfileName}</div>
+					<div className='flex'>
+						{profile.comments.length} <FaComments />
+					</div>
 				</div>
+			</div>
+			<hr />
 
-				<div className='w-full mt-2 p-2 flex gap-2.5 flex-wrap'>
-					{profiles?.profiles?.map((profile) => (
-						<Card key={profile.id}>
-							<div className='w-28 h-20 md:h-32 md:w-36 flex flex-col'>
-								<div className='w-full text-xs md:text-sm flex items-center flex-col'>
-									<div>Имя профиля:</div>
-									<div className='underline text-center'>{profile.name}</div>
-								</div>
-
-								<div className='w-full text-xs md:text-sm flex items-center flex-col'>
-									<div>Описание:</div>
-									<div className='underline text-center'>
-										{profile.description.length >= 30
-											? profile.description.substring(0, 30) + '...'
-											: profile.description}
-									</div>
-								</div>
-							</div>
-
-							<div className='w-full text-center text-xs md:text-sm flex justify-center items-center gap-0.5'>
-								Лайки <FcLike />: {profile.likes.length}
-							</div>
-							<div className='w-full text-center text-xs md:text-sm flex justify-center items-center gap-0.5'>
-								Комментарий <FaComments />: {profile.comments.length}
-							</div>
-						</Card>
-					))}
+			<div className='w-full flex justify-center'>
+				<pre className='font-nunito overflow-auto w-full max-h-64'>
+					{profile.description}
+				</pre>
+			</div>
+			<hr />
+			{(profile?.additional_photos as string).length > 0 && (
+				<div
+					onClick={() => {
+						navigate(`/users/${id}/images`, {
+							state: {
+								images: profile?.additional_photos,
+							},
+						});
+					}}
+					className='text-center cursor-pointer hover:text-blue-600 hover:underline'>
+					Картинки
 				</div>
-			</main>
-		);
+			)}
+		</div>
+	));
+
+	if (profiles?.profiles.length === 0) {
+		return <Modal setIsOpen={setIsOpen}>Бизнес страницы не найдены</Modal>;
+	} else return <Slider components={profilesArray} />;
 }
