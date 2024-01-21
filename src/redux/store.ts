@@ -14,6 +14,7 @@ import {
 	myChatApi,
 	locationApi,
 } from './services';
+import {complaintApi} from "@/redux/services/complaint.service.ts";
 
 const serviceReducers = {
 	[chatTypeApi.reducerPath]: chatTypeApi.reducer,
@@ -25,6 +26,7 @@ const serviceReducers = {
 	[profileApi.reducerPath]: profileApi.reducer,
 	[myChatApi.reducerPath]: myChatApi.reducer,
 	[locationApi.reducerPath]: locationApi.reducer,
+	[complaintApi.reducerPath]: complaintApi.reducer,
 };
 
 const serviceMiddlewares = [
@@ -37,6 +39,7 @@ const serviceMiddlewares = [
 	myChatApi.middleware,
 	userApi.middleware,
 	locationApi.middleware,
+	complaintApi.middleware
 ];
 
 const rootReducers = combineReducers({

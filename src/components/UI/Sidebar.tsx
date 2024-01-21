@@ -7,7 +7,7 @@ import { logout } from '@/redux/slices/user.slice';
 import { FC } from 'react';
 
 import { SideButtons } from '..';
-import { MdCategory } from 'react-icons/md';
+import {MdCategory, MdOutlineReport} from 'react-icons/md';
 
 interface IProps {
 	isOpen?: boolean;
@@ -40,6 +40,11 @@ export const Sidebar: FC<IProps> = ({ isOpen }) => {
 					link='/categories'
 					routename='Категории'>
 					<MdCategory className='text-white text-3xl' />
+				</SideButtons>
+				<SideButtons
+					link='/complaints'
+					routename='Жалобы'>
+					<MdOutlineReport className='text-white text-3xl' />
 				</SideButtons>
 
 				<SideButtons
