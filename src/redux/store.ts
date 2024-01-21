@@ -12,6 +12,7 @@ import {
 	categoryApi,
 	profileApi,
 	myChatApi,
+	subchatApi,
 	locationApi,
 } from './services';
 
@@ -25,6 +26,7 @@ const serviceReducers = {
 	[profileApi.reducerPath]: profileApi.reducer,
 	[myChatApi.reducerPath]: myChatApi.reducer,
 	[locationApi.reducerPath]: locationApi.reducer,
+	[subchatApi.reducerPath]: subchatApi.reducer,
 };
 
 const serviceMiddlewares = [
@@ -37,6 +39,7 @@ const serviceMiddlewares = [
 	myChatApi.middleware,
 	userApi.middleware,
 	locationApi.middleware,
+	subchatApi.middleware,
 ];
 
 const rootReducers = combineReducers({

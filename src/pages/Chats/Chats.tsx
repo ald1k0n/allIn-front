@@ -16,7 +16,7 @@ import {
 } from '@/redux/services';
 import { IUser } from '@/models';
 import { IChatModel } from '@/models/chats/chat.model.ts';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { MdDelete, MdEdit } from 'react-icons/md';
 
 export default function Chats() {
@@ -37,6 +37,8 @@ export default function Chats() {
 	const [chatType, setChatType] = useState('');
 	const [initialChat, setInitialChat] = useState<IChatModel[]>([]);
 	const [currentUser, setCurrentUser] = useState<number | null>(null);
+
+	const navigate = useNavigate();
 
 	//NOTE - Так делать нельзя, делаю так потому-что нужно закончить до 31 числа, :D!
 	useEffect(() => {
@@ -112,6 +114,18 @@ export default function Chats() {
 					</div>
 				);
 			},
+		},
+		{
+			header: 'Под-чаты',
+			cell: ({ row }: { row: { original: IChatModel } }) => (
+				<div>
+					<Button
+						onClick={() => navigate(`/chats/${row.original.id}/subchats`)}
+						styles='default'>
+						Открыть
+					</Button>
+				</div>
+			),
 		},
 		{
 			header: 'Дата создания',
