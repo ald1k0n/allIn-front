@@ -17,6 +17,8 @@ const ChatCreate = lazy(() => import('@/pages/Chats/ChatCreate'));
 const LocationCreate = lazy(() => import('@/pages/Locations/LocationCreate'));
 const ChatTypes = lazy(() => import('@/pages/Chats/ChatTypes.tsx'));
 const ChatTypeCreate = lazy(() => import('@/pages/Chats/ChatTypeCreate.tsx'));
+const ErrorPage = lazy(() => import('@/pages/ErrorPage'));
+const UserProfileImages = lazy(() => import('@/pages/Users/UserProfileImages'));
 
 const router = createBrowserRouter([
 	{
@@ -50,10 +52,12 @@ const router = createBrowserRouter([
 	{
 		path: '/users',
 		element: (
-			<Layout>
+			<>
 				<Outlet />
-				<Users />
-			</Layout>
+				<Layout>
+					<Users />
+				</Layout>
+			</>
 		),
 		children: [
 			{
@@ -63,6 +67,10 @@ const router = createBrowserRouter([
 			{
 				path: '/users/create',
 				element: <UserCreate />,
+			},
+			{
+				path: '/users/:id/images',
+				element: <UserProfileImages />,
 			},
 		],
 	},
@@ -84,6 +92,10 @@ const router = createBrowserRouter([
 				element: <ChatTypeCreate />,
 			},
 		],
+	},
+	{
+		path: '*',
+		element: <ErrorPage />,
 	},
 ]);
 
