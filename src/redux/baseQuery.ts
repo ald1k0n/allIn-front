@@ -21,11 +21,13 @@ export const baseQueryReAuth = async (
 ) => {
 	let result = await baseQuery(args, api, extraOptions as NonNullable<unknown>);
 
-	if (result?.error?.status === 401) {
+	if (result?.error?.status === 400) {
 		console.log('sending refresh');
 		const refreshResult = await fetch(`${baseURL}/auth/refresh`, {
 			headers: {
-				authorization: `Bearer ${api.getState().user.state.refreshToken}`,
+				authorization: `Bearer ${JSON.parse(
+					localStorage.getItem('refreshToken')!
+				)}`,
 			},
 		})
 			.then((res) => res.json())

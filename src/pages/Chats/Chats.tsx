@@ -217,7 +217,7 @@ export default function Chats() {
 					<Loader />
 				) : (
 					<div className='flex-col md:flex-row w-full flex justify-between'>
-						<div className='w-64 flex items-center gap-1.5'>
+						<div className='w-72 flex items-center gap-1.5'>
 							<label htmlFor='user'>Пользователь</label>
 							<select
 								id='user'
@@ -249,7 +249,36 @@ export default function Chats() {
 						</div>
 
 						<div className='w-72 flex justify-center flex-col  gap-2'>
-							<div className='flex gap-1.5'>
+							<select
+								disabled={currentUser ? false : true}
+								onChange={(e) => {
+									setChatType(e.target.value);
+								}}
+								className='border'>
+								<>
+									{[
+										{
+											name: 'Все',
+											option: 'all',
+										},
+										{
+											name: 'Сохранненые',
+											option: 'saved',
+										},
+										{
+											name: 'Подписанные',
+											option: 'sub',
+										},
+									].map((chattype) => (
+										<option
+											value={chattype.option}
+											key={chattype.name}>
+											{chattype.name}
+										</option>
+									))}
+								</>
+							</select>
+							{/* <div className='flex gap-1.5'>
 								<label htmlFor='all'>Все</label>
 								<input
 									id='all'
@@ -282,7 +311,7 @@ export default function Chats() {
 									value='sub'
 									onChange={(e) => setChatType(e.target.value)}
 								/>
-							</div>
+							</div> */}
 						</div>
 					</div>
 				)}
