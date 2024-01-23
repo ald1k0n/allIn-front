@@ -11,6 +11,7 @@ export interface IUser {
 		id?: number;
 		name?: string;
 	};
+	blockReason?: string
 }
 
 export interface ILogin {
