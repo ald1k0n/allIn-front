@@ -1,172 +1,187 @@
-import { format } from 'date-fns';
-import { toast } from 'react-hot-toast';
+import { format } from "date-fns";
+import { toast } from "react-hot-toast";
 
-import {Button, Input, Loader, Modal, Table} from '@/components';
-import { IUser } from '@/models';
-import {IComplaintModel} from "@/models/complaint.model.ts";
-import {useDeleteComplaintMutation, useGetComplaintsQuery} from "@/redux/services/complaint.service.ts";
-import {useState} from "react";
-import {MdDelete} from "react-icons/md";
-import {useUpdateUsersMutation} from "@/redux/services";
-import {FaBan} from "react-icons/fa";
+import { Button, Input, Loader, Modal, Table } from "@/components";
+import { IComplaintModel } from "@/models/complaint.model.ts";
+import {
+  useDeleteComplaintMutation,
+  useGetComplaintsQuery,
+} from "@/redux/services/complaint.service.ts";
+import { useState } from "react";
+import { MdDelete } from "react-icons/md";
+import { useUpdateUsersMutation } from "@/redux/services";
+import { FaBan } from "react-icons/fa";
 
 export default function Complaints() {
-	const [isOpen, setIsOpen] = useState(false);
-	const [rowData, setRowData] = useState<IComplaintModel>();
-	const [block, setBlock] = useState({
-		blockHours: "",
-		blockReason: ""
-	});
+  const [isOpen, setIsOpen] = useState(false);
+  const [rowData, setRowData] = useState<IComplaintModel>();
+  const [block, setBlock] = useState({
+    blockHours: "",
+    blockReason: "",
+  });
 
-	const { data: complaints, isLoading: isLoadingComplaints } = useGetComplaintsQuery();
-	const [deleteComplaint] = useDeleteComplaintMutation();
+  const {
+    data: complaints,
+    isLoading: isLoadingComplaints,
+    refetch,
+  } = useGetComplaintsQuery();
+  const [deleteComplaint] = useDeleteComplaintMutation();
 
-	const [updateUser] = useUpdateUsersMutation();
+  const [updateUser] = useUpdateUsersMutation();
 
-	const cols = [
-		{
-			header: 'id',
-			accessorKey: 'id',
-		},
-		{
-			header: 'Тип',
-			accessorKey: 'entityType',
-		},
-		{
-			header: 'Пользователь',
-			cell: ({ row }: { row: { original: IUser } }) => {
-				return (
-					<div className='w-full flex justify-center'>
-						{row.original.id}
-					</div>
-				);
-			},
-		},
-		{
-			header: 'Жалоба',
-			accessorKey: 'text'
-		},
-		{
-			header: 'Дата создания',
-			accessorKey: 'createdAt',
-			cell: ({ row }: { row: { original: IComplaintModel } }) => {
-				return (
-					<div>
-						{format(
-							new Date(row.original?.createdAt as string),
-							'dd MMMM yyyy'
-						)}
-					</div>
-				);
-			},
-		},
-		{
-			header: 'Удалить',
-			cell: ({ row }: { row: { original: IComplaintModel } }) => {
-				return (
-					<div className='w-full flex justify-center'>
-						<div
-							onClick={() => handleDelete(row.original.id!)}
-							className='w-8 h-8 rounded-full bg-red-500 flex justify-center items-center'>
-							<MdDelete className='w-full text-center text-xl text-white  cursor-pointer' />
-						</div>
-					</div>
-				);
-			},
-		},
-		{
-			header: 'Забанить',
-			cell: ({ row }: { row: { original: IComplaintModel } }) => {
-				return (
-					<div className='w-full flex justify-center'>
-						<div
-							onClick={() => {
-								setRowData(row.original)
-								setIsOpen(true);
-							}}
-							className='w-8 h-8 rounded-full bg-blue-500 flex justify-center items-center'>
-							<FaBan className='w-full text-center text-xl cursor-pointer text-white' />
-						</div>
-					</div>
-				);
-			},
-		},
-	];
+  const cols = [
+    {
+      header: "id",
+      accessorKey: "id",
+    },
 
-	const handleDelete = async (id: number) => {
-		await toast.promise(deleteComplaint(id).unwrap(), {
-			success: 'Успешно удален пользователь',
-			loading: 'Загрузка...',
-			error: (err) => JSON.stringify(err, null, 2),
-		});
-	};
+    {
+      header: "Пользователь",
+      cell: ({ row }: { row: { original: IComplaintModel } }) => {
+        return (
+          <div className="w-full flex justify-center">
+            {row.original.user.name}
+          </div>
+        );
+      },
+    },
+    {
+      header: "Тип жалобы",
+      accessorKey: "entity_type",
+    },
+    {
+      header: "Жалоба",
+      accessorKey: "text",
+    },
+    {
+      header: "Дата создания",
+      accessorKey: "createdAt",
+      cell: ({ row }: { row: { original: IComplaintModel } }) => {
+        return (
+          <div>
+            {format(
+              new Date(row.original?.createdAt as string),
+              "dd MMMM yyyy"
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      header: "Удалить",
+      cell: ({ row }: { row: { original: IComplaintModel } }) => {
+        return (
+          <div className="w-full flex justify-center">
+            <div
+              onClick={() => handleDelete(row.original.id!)}
+              className="w-8 h-8 rounded-full bg-red-500 flex justify-center items-center"
+            >
+              <MdDelete className="w-full text-center text-xl text-white  cursor-pointer" />
+            </div>
+          </div>
+        );
+      },
+    },
+    {
+      header: "Забанить",
+      cell: ({ row }: { row: { original: IComplaintModel } }) => {
+        return (
+          <div className="w-full flex justify-center">
+            <div
+              onClick={() => {
+                setRowData(row.original);
+                setIsOpen(true);
+              }}
+              className="w-8 h-8 rounded-full bg-blue-500 flex justify-center items-center"
+            >
+              <FaBan className="w-full text-center text-xl cursor-pointer text-white" />
+            </div>
+          </div>
+        );
+      },
+    },
+  ];
 
-	const handleBan = async () => {
-		const formData = new FormData()
+  const handleDelete = async (id: number) => {
+    await toast.promise(deleteComplaint(id).unwrap(), {
+      success: "Успешно удален пользователь",
+      loading: "Загрузка...",
+      error: (err) => JSON.stringify(err, null, 2),
+    });
+  };
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-expect-error
-		formData.append("id", rowData?.target.id)
-		formData.append("blockHours", block.blockHours)
-		formData.append("blockReason", block.blockReason)
+  const handleBan = async () => {
+    const formData = new FormData();
+    // console.log(rowData);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    formData.append("id", rowData?.user_id);
+    formData.append("blockHours", block.blockHours);
+    formData.append("blockReason", block.blockReason);
 
-		await toast.promise(updateUser(formData).unwrap(), {
-			success: 'Пользователь успешно забанен',
-			loading: 'Загрузка...',
-			error: (err) => JSON.stringify(err, null, 2),
-		});
-	}
+    await toast
+      .promise(updateUser(formData).unwrap(), {
+        success: "Пользователь успешно забанен",
+        loading: "Загрузка...",
+        error: (err) => JSON.stringify(err, null, 2),
+      })
+      .then(() => handleDelete((rowData as IComplaintModel).id!))
+      .finally(() => refetch());
+  };
 
-	if (isLoadingComplaints) {
-		return <Loader />;
-	}
+  if (isLoadingComplaints) {
+    return <Loader />;
+  }
+  // console.log(complaints?.complaints);
+  return (
+    <>
+      <main className="w-full flex gap-y-4 gap-4 justify-center md:justify-normal flex-wrap">
+        <div className="w-full flex justify-between">
+          <div className="text-xl">
+            Количество жалоб {complaints?.complaints.length}
+          </div>
+        </div>
+        <Table
+          columns={cols}
+          data={complaints?.complaints as IComplaintModel[]}
+        />
+      </main>
+      {isOpen && (
+        <Modal setIsOpen={setIsOpen}>
+          <div className="p-3 flex flex-col gap-y-4 w-80">
+            <div className="text-center text-lg">
+              Пользователь {rowData?.user.name}
+            </div>
+            <Input
+              input_size={"medium"}
+              defaultValue={block.blockHours}
+              value={block.blockHours}
+              onChange={(e) =>
+                setBlock({ ...block, blockHours: e.target.value })
+              }
+              type="text"
+              placeholder={"Количество часов"}
+              label={"Количество часов"}
+            />
 
-	return (
-		<>
-			<main className='w-full flex gap-y-4 gap-4 justify-center md:justify-normal flex-wrap'>
-				<div className='w-full flex justify-between'>
-					<div className='text-xl'>Количество жалоб {complaints?.complaints.length}</div>
-				</div>
-				<Table
-					columns={cols}
-					data={complaints?.complaints as IComplaintModel[]}
-				/>
-			</main>
-			{isOpen && (
-				<Modal setIsOpen={setIsOpen}>
-					<div className='p-3 flex flex-col gap-y-4 w-80'>
-						<div className='text-center text-lg'>
-							Пользователь {rowData?.target.name}
-						</div>
-						<Input
-							input_size={'medium'}
-							defaultValue={block.blockHours}
-							value={block.blockHours}
-							onChange={(e) => setBlock({ ...block, blockHours: e.target.value })}
-							type='text'
-							placeholder={'Количество часов'}
-							label={'Количество часов'}
-						/>
+            <Input
+              input_size={"medium"}
+              defaultValue={block.blockReason}
+              value={block.blockReason}
+              onChange={(e) =>
+                setBlock({ ...block, blockReason: e.target.value })
+              }
+              type="text"
+              placeholder={"Причина бана"}
+              label={"Причина бана"}
+            />
 
-						<Input
-							input_size={'medium'}
-							defaultValue={block.blockReason}
-							value={block.blockReason}
-							onChange={(e) => setBlock({ ...block, blockReason: e.target.value })}
-							type='text'
-							placeholder={'Причина бана'}
-							label={'Причина бана'}
-						/>
-
-						<Button
-							styles={'default'}
-							onClick={handleBan}>
-							Отправить
-						</Button>
-					</div>
-				</Modal>
-			)}
-		</>
-
-	);
+            <Button styles={"default"} onClick={handleBan}>
+              Отправить
+            </Button>
+          </div>
+        </Modal>
+      )}
+    </>
+  );
 }
