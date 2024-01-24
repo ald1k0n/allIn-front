@@ -1,7 +1,10 @@
 import { FC } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { Keyboard, Navigation } from 'swiper/modules';
+
 import 'swiper/css';
+import 'swiper/css/navigation';
 
 interface IProps {
 	images?: string[];
@@ -12,8 +15,9 @@ export const Slider: FC<IProps> = ({ images, components }) => {
 	return (
 		<div className='bg-black z-50 bg-opacity-50 fixed top-0 w-full min-h-screen flex justify-center items-center'>
 			<Swiper
-				// modules={[Navigation, Pagination]}
-				// navigation
+				modules={[Keyboard, Navigation]}
+				navigation
+				keyboard
 				spaceBetween={50}
 				slidesPerView={1}>
 				{images ? (
