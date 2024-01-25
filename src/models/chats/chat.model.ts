@@ -2,6 +2,7 @@ import { IUser } from '../users/user.model.ts';
 import { IChatTypeModel } from './chat-type.model.ts';
 import { ILocationModel } from '../location.model.ts';
 import { ISubChatModel } from './subchat.model.ts';
+
 export interface IChatModel {
 	id?: number;
 	title: string;

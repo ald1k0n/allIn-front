@@ -7,12 +7,12 @@ import { Table, Loader, Button, Modal, Input } from '@/components';
 import {
 	useLazyGetSavedChatsQuery,
 	useLazyGetSubscribedChatsQuery,
-	useGetChatsQuery,
 	useUpdateChatMutation,
 	useDeleteChatMutation,
 	useGetUsersQuery,
 	useGetLocationsQuery,
 	useGetChatTypeQuery,
+	useLazyGetChatsQuery,
 } from '@/redux/services';
 import { IUser } from '@/models';
 import { IChatModel } from '@/models/chats/chat.model.ts';
@@ -20,48 +20,55 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MdDelete, MdEdit } from 'react-icons/md';
 
 export default function Chats() {
-	const { data: chats, isLoading } = useGetChatsQuery();
-	const [getSavedChats] = useLazyGetSavedChatsQuery();
-	const [getSubChats] = useLazyGetSubscribedChatsQuery();
 	const { data: users, isLoading: loadingUsers } = useGetUsersQuery();
-	const [updateChat] = useUpdateChatMutation();
-	const [deleteChat] = useDeleteChatMutation();
 	const { data: locations, isLoading: locationsLoading } =
 		useGetLocationsQuery();
+
 	const { data: chatTypes, isLoading: typesLoading } = useGetChatTypeQuery();
+
+	const [fetchChats] = useLazyGetChatsQuery();
+	const [getSavedChats] = useLazyGetSavedChatsQuery();
+	const [getSubChats] = useLazyGetSubscribedChatsQuery();
+	const [updateChat] = useUpdateChatMutation();
+	const [deleteChat] = useDeleteChatMutation();
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [rowData, setRowData] = useState<IChatModel>();
 	const [chat, setChat] = useState(rowData);
 	const [file, setFile] = useState(null);
 	const [chatType, setChatType] = useState('');
-	const [initialChat, setInitialChat] = useState<IChatModel[]>([]);
+	const [initialChat, setInitialChat] = useState<any>([]);
 	const [currentUser, setCurrentUser] = useState<number | null>(null);
+
+	const [typeId, setTypeId] = useState<number | null>(null);
+	const [locationId, setLocationId] = useState<number | null>(null);
 
 	const navigate = useNavigate();
 
-	//NOTE - Так делать нельзя, делаю так потому-что нужно закончить до 31 числа, :D!
 	useEffect(() => {
-		if (!isLoading) setInitialChat(chats?.data as IChatModel[]);
-	}, [isLoading, chats?.data]);
+		fetchChats({}).then(({ data }) => setInitialChat(data?.data));
+	}, [fetchChats]);
 
 	const findChat = async () => {
-		if (currentUser)
-			if (chatType === '') {
-				setInitialChat(chats?.data as IChatModel[]);
+		if (currentUser) {
+			if (chatType === 'all') {
+				await fetchChats({}).then(({ data }) => setInitialChat(data?.data));
 			} else if (chatType === 'sub') {
 				await getSubChats(currentUser).then((res) =>
-					setInitialChat(
-						//@ts-ignore
-						res.data
-					)
+					setInitialChat(res.data?.chats)
 				);
 			} else if (chatType === 'saved') {
 				await getSavedChats(currentUser).then((res) =>
 					//@ts-ignore
-					setInitialChat(res.data)
+					setInitialChat(res?.data.chats)
 				);
 			}
+		} else {
+			await fetchChats({
+				typeId: typeId as number,
+				locationId: locationId as number,
+			}).then(({ data }) => setInitialChat(data?.data));
+		}
 	};
 
 	const fileRef = useRef(null);
@@ -77,7 +84,9 @@ export default function Chats() {
 		},
 		{
 			header: 'Местоположение',
-			accessorKey: 'location_id',
+			cell: ({ row }: { row: { original: IChatModel } }) => {
+				return <div>{row.original.location?.name}</div>;
+			},
 		},
 		{
 			header: 'Чат закреплен',
@@ -209,7 +218,7 @@ export default function Chats() {
 		});
 	};
 
-	if (isLoading || locationsLoading || typesLoading) return <Loader />;
+	if (locationsLoading || typesLoading) return <Loader />;
 
 	return (
 		<>
@@ -230,102 +239,114 @@ export default function Chats() {
 				{loadingUsers ? (
 					<Loader />
 				) : (
-					<div className='flex-col md:flex-row w-full flex justify-between'>
-						<div className='w-72 flex items-center gap-1.5'>
-							<label htmlFor='user'>Пользователь</label>
-							<select
-								id='user'
-								onChange={(e) => setCurrentUser(Number(e.target.value))}
-								className='p-1.5 border border-black rounded-md h-8 focus:outline-none'>
-								<option
-									value=''
-									disabled
-									selected>
-									Выберите человека
-								</option>
-								{users?.data.map((user) => (
+					<div className='flex-col md:flex-row w-full flex'>
+						<div className=''>
+							<div className='w-full flex items-center gap-1.5'>
+								<label htmlFor='user'>Пользователь</label>
+								<select
+									id='user'
+									onChange={(e) => setCurrentUser(Number(e.target.value))}
+									className='border'>
 									<option
-										key={user.id}
-										value={user.id}>
-										{user.name}
+										value={undefined}
+										selected>
+										Выберите человека
 									</option>
-								))}
-							</select>
-						</div>
+									{users?.data.map((user) => (
+										<option
+											key={user.id}
+											value={user.id}>
+											{user.name}
+										</option>
+									))}
+								</select>
+							</div>
+							<div className='w-full flex items-center gap-1.5'>
+								<label htmlFor='sub-chat'>Выберите тип чата</label>
+								<select
+									id='sub-chat'
+									disabled={currentUser ? false : true}
+									onChange={(e) => {
+										setChatType(e.target.value);
+									}}
+									className='border'>
+									<>
+										{[
+											{
+												name: 'Все',
+												option: 'all',
+											},
+											{
+												name: 'Сохранненые',
+												option: 'saved',
+											},
+											{
+												name: 'Подписанные',
+												option: 'sub',
+											},
+										].map((chattype) => (
+											<option
+												value={chattype.option}
+												key={chattype.name}>
+												{chattype.name}
+											</option>
+										))}
+									</>
+								</select>
+							</div>
 
+							<div className='w-full flex items-center  gap-2'>
+								<label htmlFor='type'>Выберите локацию</label>
+								<select
+									disabled={currentUser ? true : false}
+									id='type'
+									onChange={(e) => setLocationId(Number(e.target.value))}
+									className='border'>
+									{/* {console.log(chatType)} */}
+									<option
+										selected
+										disabled
+										value={undefined}>
+										Выберите локацию чата
+									</option>
+									{locations?.locations.map((type) => (
+										<option
+											value={type.id}
+											key={type.id}>
+											{type.name}
+										</option>
+									))}
+								</select>
+							</div>
+							<div className='w-full flex items-center  gap-2'>
+								<label htmlFor='type'>Выберите категорию чата</label>
+								<select
+									id='type'
+									onChange={(e) => setTypeId(Number(e.target.value))}
+									className='border'>
+									<option
+										selected
+										disabled
+										value={undefined}>
+										Выберите категорию чата
+									</option>
+									{chatTypes?.chatTypes.map((type) => (
+										<option
+											value={type.id}
+											key={type.id}>
+											{type.title}
+										</option>
+									))}
+								</select>
+							</div>
+						</div>
 						<div className='w-24 lg:w-80 flex items-center'>
 							<Button
-								disabled={!currentUser}
+								// disabled={!currentUser}
 								onClick={findChat}
 								styles='default'>
 								Найти
 							</Button>
-						</div>
-
-						<div className='w-72 flex justify-center flex-col  gap-2'>
-							<select
-								disabled={currentUser ? false : true}
-								onChange={(e) => {
-									setChatType(e.target.value);
-								}}
-								className='border'>
-								<>
-									{[
-										{
-											name: 'Все',
-											option: 'all',
-										},
-										{
-											name: 'Сохранненые',
-											option: 'saved',
-										},
-										{
-											name: 'Подписанные',
-											option: 'sub',
-										},
-									].map((chattype) => (
-										<option
-											value={chattype.option}
-											key={chattype.name}>
-											{chattype.name}
-										</option>
-									))}
-								</>
-							</select>
-							{/* <div className='flex gap-1.5'>
-								<label htmlFor='all'>Все</label>
-								<input
-									id='all'
-									type='radio'
-									name='chatType'
-									defaultChecked
-									onChange={(e) => {
-										setChatType(e.target.value);
-										// setCurrentUser(null);
-									}}
-									value=''
-								/>
-							</div>
-							<div className='flex gap-1.5'>
-								<label htmlFor='saved'>Сохраненные</label>
-								<input
-									id='saved'
-									type='radio'
-									name='chatType'
-									value='saved'
-									onChange={(e) => setChatType(e.target.value)}
-								/>
-							</div>
-							<div className='flex gap-1.5'>
-								<label htmlFor='sub'>Подписанные</label>
-								<input
-									id='sub'
-									type='radio'
-									name='chatType'
-									value='sub'
-									onChange={(e) => setChatType(e.target.value)}
-								/>
-							</div> */}
 						</div>
 					</div>
 				)}
@@ -353,7 +374,7 @@ export default function Chats() {
 							<label
 								htmlFor='type'
 								className='text-lg font-medium'>
-								Тип чата
+								Категории чата
 							</label>
 							<select
 								onChange={(e) => {
