@@ -18,7 +18,10 @@ interface Data {
 }
 
 export const useGetChatTypeToPie = () => {
-	const { data: chats, isLoading } = useGetChatsQuery();
+	const { data: chats, isLoading } = useGetChatsQuery({
+		locationId: null,
+		typeId: null,
+	});
 	const { data: chatTypes, isLoading: loadingChatTypes } =
 		useGetChatTypeQuery();
 

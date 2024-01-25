@@ -9,7 +9,7 @@ export const chatApi = createApi({
 	endpoints: (builder) => ({
 		getChats: builder.query<
 			{ data: IChatModel[]; count?: number },
-			{ typeId?: number; locationId?: number }
+			{ typeId?: number | null; locationId?: number | null }
 		>({
 			query: ({ locationId, typeId }) => ({
 				url: `/admin/chats?type_id=${typeId ? typeId : ''}&location_id=${
