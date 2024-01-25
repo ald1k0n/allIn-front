@@ -7,9 +7,14 @@ export const chatApi = createApi({
 	baseQuery: baseQueryReAuth,
 	tagTypes: ['Chats', 'Saved', 'Subscribed'],
 	endpoints: (builder) => ({
-		getChats: builder.query<{ data: IChatModel[]; count?: number }, void>({
-			query: () => ({
-				url: '/admin/chats',
+		getChats: builder.query<
+			{ data: IChatModel[]; count?: number },
+			{ typeId?: number | null; locationId?: number | null }
+		>({
+			query: ({ locationId, typeId }) => ({
+				url: `/admin/chats?type_id=${typeId ? typeId : ''}&location_id=${
+					locationId ? locationId : ''
+				}`,
 			}),
 			providesTags: (result) =>
 				result
@@ -80,6 +85,7 @@ export const chatApi = createApi({
 
 export const {
 	useGetChatsQuery,
+	useLazyGetChatsQuery,
 	useLazyGetSavedChatsQuery,
 	useLazyGetSubscribedChatsQuery,
 	useUpdateChatMutation,

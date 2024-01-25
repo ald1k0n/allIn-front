@@ -5,7 +5,10 @@ import { useGetChatTypeToPie, useGetLineData, useGetPieData } from '@/hooks';
 
 export default function Home() {
 	const { data: usersData, isLoading: isUserLoading } = useGetUsersQuery();
-	const { data: chatData, isLoading: isChatLoading } = useGetChatsQuery();
+	const { data: chatData, isLoading: isChatLoading } = useGetChatsQuery({
+		locationId: null,
+		typeId: null,
+	});
 
 	const { pieData } = useGetPieData();
 	const { userData } = useGetLineData();
