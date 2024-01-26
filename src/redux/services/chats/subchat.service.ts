@@ -38,6 +38,17 @@ export const subchatApi = createApi({
 			}),
 			invalidatesTags: ['SubChats'],
 		}),
+
+		updateSubchat: builder.mutation<undefined, { id: number; title: string }>({
+			query: ({ id, title }) => ({
+				url: `/subchats/${id}`,
+				method: 'PATCH',
+				body: {
+					title,
+				},
+			}),
+			invalidatesTags: ['SubChats'],
+		}),
 	}),
 });
 
@@ -45,4 +56,5 @@ export const {
 	useCreateSubchatMutation,
 	useGetSubchatByChatIdQuery,
 	useDeleteSubchatMutation,
+	useUpdateSubchatMutation,
 } = subchatApi;
