@@ -7,6 +7,7 @@ import {
 	useGetSubchatByChatIdQuery,
 	useDeleteSubchatMutation,
 	useCreateSubchatMutation,
+	useUpdateSubchatMutation,
 } from '@/redux/services';
 import { Loader, Modal } from '@/components';
 
@@ -22,6 +23,7 @@ export default function SubChats() {
 	const { data, isLoading } = useGetSubchatByChatIdQuery(Number(id));
 	const [deleteSubchat] = useDeleteSubchatMutation();
 	const [createSubchat] = useCreateSubchatMutation();
+	const [updateSubchat] = useUpdateSubchatMutation();
 
 	useEffect(() => {
 		if (!isOpen) navigate(-1);
@@ -39,24 +41,14 @@ export default function SubChats() {
 		});
 	};
 
-	const editSubchat = async (id: number, chat_id: number) => {
-		const editSub = new Promise<void>(async (resolve, reject) => {
-			try {
-				await Promise.all([
-					deleteSubchat(id),
-					createSubchat({ chat_id, title: subChatName }),
-				]);
-				resolve();
-			} catch (error) {
-				reject(error);
-			}
-		});
-
-		await toast.promise(editSub, {
-			error: (err) => JSON.stringify(err, null, 2),
-			loading: 'Загрузка...',
-			success: 'Успешно изменен под-чат',
-		});
+	const editSubchat = async (id: number) => {
+		await toast
+			.promise(updateSubchat({ id, title: subChatName }).unwrap(), {
+				error: (err) => JSON.stringify(err, null, 2),
+				loading: 'Загрузка...',
+				success: 'Успешно изменен под-чат',
+			})
+			.finally(() => setSubChatId(null));
 	};
 
 	const handleCreate = async () => {
@@ -125,7 +117,7 @@ export default function SubChats() {
 								{subChatId === sub.id ? (
 									<button
 										title='Сохранить'
-										onClick={() => editSubchat(sub.id!, sub.chat_id)}
+										onClick={() => editSubchat(sub.id!)}
 										className='w-6 h-6 bg-green-500 text-white flex justify-center items-center rounded-full'>
 										<MdSave />
 									</button>
