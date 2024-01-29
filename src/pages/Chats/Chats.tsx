@@ -239,10 +239,9 @@ export default function Chats() {
 				{loadingUsers ? (
 					<Loader />
 				) : (
-					<div className='flex-col md:flex-row w-full flex'>
-						<div className=''>
-							<div className='w-full flex items-center gap-1.5'>
-								<label htmlFor='user'>Пользователь</label>
+					<div className='md:flex-row w-full flex'>
+						<div className='w-full flex'>
+							<div className='w-full flex flex-col items-center gap-1.5'>
 								<select
 									id='user'
 									onChange={(e) => setCurrentUser(Number(e.target.value))}
@@ -250,7 +249,7 @@ export default function Chats() {
 									<option
 										value={undefined}
 										selected>
-										Выберите человека
+										Выберите пользователя
 									</option>
 									{users?.data.map((user) => (
 										<option
@@ -261,8 +260,7 @@ export default function Chats() {
 									))}
 								</select>
 							</div>
-							<div className='w-full flex items-center gap-1.5'>
-								<label htmlFor='sub-chat'>Выберите тип чата</label>
+							<div className='w-full flex-col flex items-center gap-1.5'>
 								<select
 									id='sub-chat'
 									disabled={currentUser ? false : true}
@@ -295,8 +293,7 @@ export default function Chats() {
 								</select>
 							</div>
 
-							<div className='w-full flex items-center  gap-2'>
-								<label htmlFor='type'>Выберите локацию</label>
+							<div className='w-full flex-col flex items-center  gap-2'>
 								<select
 									disabled={currentUser ? true : false}
 									id='type'
@@ -318,8 +315,7 @@ export default function Chats() {
 									))}
 								</select>
 							</div>
-							<div className='w-full flex items-center  gap-2'>
-								<label htmlFor='type'>Выберите категорию чата</label>
+							<div className='w-full flex-col flex items-center  gap-2'>
 								<select
 									id='type'
 									onChange={(e) => setTypeId(Number(e.target.value))}
