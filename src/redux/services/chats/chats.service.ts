@@ -14,7 +14,7 @@ export const chatApi = createApi({
 			query: ({ locationId, typeId }) => ({
 				url: `/admin/chats?type_id=${typeId ? typeId : ''}&location_id=${
 					locationId ? locationId : ''
-				}`,
+				}&limit=10000`,
 			}),
 			providesTags: (result) =>
 				result

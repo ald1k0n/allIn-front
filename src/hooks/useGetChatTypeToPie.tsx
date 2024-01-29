@@ -36,15 +36,16 @@ export const useGetChatTypeToPie = () => {
 				const typeEntry = chatTypes?.chatTypes.find(
 					(entry) => entry.id === type_id
 				);
+				// console.log(chatTypes?.chatTypes.find((e) => e.id === chat.type_id));
 
 				const title = typeEntry ? typeEntry.title : 'Без типа';
 
 				typeCounts[title as string] = (typeCounts[title as string] || 0) + 1;
 			});
-
-			const labels = Object.keys(typeCounts);
+			// console.log(typeCounts);
+			const labels = chatTypes?.chatTypes.map((e) => e.title) as string[];
 			const data: number[] = Object.values(typeCounts);
-			const colors = labels.map(() => getRandomColor());
+			const colors = labels?.map(() => getRandomColor());
 
 			setData({
 				colors,
@@ -57,6 +58,6 @@ export const useGetChatTypeToPie = () => {
 			};
 		}
 	}, [isLoading, chats, loadingChatTypes, chatTypes]);
-
+	// console.log(chats);
 	return { data };
 };

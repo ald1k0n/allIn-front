@@ -39,14 +39,16 @@ export const subchatApi = createApi({
 			invalidatesTags: ['SubChats'],
 		}),
 
-		updateSubchat: builder.mutation<undefined, { id: number; title: string }>({
-			query: ({ id, title }) => ({
-				url: `/subchats/${id}`,
-				method: 'PATCH',
-				body: {
-					title,
-				},
-			}),
+		updateSubchat: builder.mutation<undefined, ISubChatModel>({
+			query: (payload) => {
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				const { id, ...body } = payload;
+				return {
+					url: `/subchats/${payload.id}`,
+					method: 'PATCH',
+					body,
+				};
+			},
 			invalidatesTags: ['SubChats'],
 		}),
 	}),
