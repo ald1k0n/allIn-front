@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { MdDelete, MdEdit, MdSave } from 'react-icons/md';
+import { MdDelete, MdEdit, MdSave, MdPushPin } from 'react-icons/md';
 import { toast } from 'react-hot-toast';
 
 import {
@@ -48,7 +48,18 @@ export default function SubChats() {
 				loading: 'Загрузка...',
 				success: 'Успешно изменен под-чат',
 			})
-			.finally(() => setSubChatId(null));
+			.finally(() => {
+				setSubChatId(null);
+			});
+	};
+
+	const handlePin = async (id: number, isPinned: boolean) => {
+		console.log(id, isPinned);
+		await toast.promise(updateSubchat({ id, isPinned: !isPinned }).unwrap(), {
+			error: (err) => JSON.stringify(err, null, 2),
+			loading: 'Загрузка...',
+			success: 'Успешно закреплен под-чат',
+		});
 	};
 
 	const handleCreate = async () => {
@@ -90,6 +101,7 @@ export default function SubChats() {
 								defaultValue={subChatName}
 								onChange={(e) => setSubChatName(e.target.value)}
 							/>
+
 							<button
 								title='Сохранить'
 								onClick={handleCreate}
@@ -98,49 +110,67 @@ export default function SubChats() {
 							</button>
 						</div>
 					)}
-					{data?.subChats.map((sub) => (
-						<div
-							className='w-full flex justify-between items-center'
-							key={sub.id}>
-							{subChatId === sub.id ? (
-								<input
-									className='border focus:outline-none'
-									placeholder='Название'
-									defaultValue={subChatName}
-									onChange={(e) => setSubChatName(e.target.value)}
-								/>
-							) : (
-								<div>{sub.title}</div>
-							)}
-
-							<div className='flex w-18 gap-1.5 p-1.5'>
+					{data?.subChats
+						?.slice()
+						.sort((a, b) =>
+							a?.isPinned === b?.isPinned ? 0 : a?.isPinned ? -1 : 1
+						)
+						.map((sub, idx) => (
+							<div
+								className='w-full flex justify-between items-center'
+								key={sub.id}>
 								{subChatId === sub.id ? (
-									<button
-										title='Сохранить'
-										onClick={() => editSubchat(sub.id!)}
-										className='w-6 h-6 bg-green-500 text-white flex justify-center items-center rounded-full'>
-										<MdSave />
-									</button>
+									<input
+										className='border focus:outline-none'
+										placeholder='Название'
+										defaultValue={subChatName}
+										onChange={(e) => setSubChatName(e.target.value)}
+									/>
 								) : (
-									<button
-										className='w-6 h-6 text-white bg-blue-400 flex justify-center items-center rounded-full'
-										title='Изменить'
-										onClick={() => {
-											setSubChatId(sub.id!);
-											setSubChatName(sub.title);
-										}}>
-										<MdEdit />
-									</button>
+									<div>{sub.title}</div>
 								)}
-								<button
-									title='Удалить'
-									className='w-6 h-6 bg-red-500 text-white flex justify-center items-center rounded-full'
-									onClick={() => handleDelete(sub.id!)}>
-									<MdDelete />
-								</button>
+
+								<div className='flex w-18 gap-1.5 p-1.5'>
+									{subChatId === sub.id ? (
+										<button
+											title='Сохранить'
+											onClick={() => editSubchat(sub.id!)}
+											className='w-6 h-6 bg-green-500 text-white flex justify-center items-center rounded-full'>
+											<MdSave />
+										</button>
+									) : (
+										<>
+											<button
+												className={`w-6  h-6 text-white ${
+													!sub?.isPinned ? 'bg-gray-400' : 'bg-blue-400'
+												} flex justify-center items-center rounded-full`}
+												title={
+													!sub.isPinned ? 'Закрепить чат' : 'Чат закреплен'
+												}
+												onClick={() => handlePin(sub.id!, sub.isPinned!)}>
+												<MdPushPin />
+											</button>
+											<button
+												className='w-6 h-6 text-white bg-blue-500 flex justify-center items-center rounded-full'
+												title='Изменить'
+												onClick={() => {
+													setSubChatId(sub.id!);
+													setSubChatName(sub.title!);
+												}}>
+												<MdEdit />
+											</button>
+										</>
+									)}
+									<button
+										disabled={idx === 0}
+										title='Удалить'
+										className='w-6 h-6 disabled:bg-red-300 bg-red-500 text-white flex justify-center items-center rounded-full'
+										onClick={() => handleDelete(sub.id!)}>
+										<MdDelete />
+									</button>
+								</div>
 							</div>
-						</div>
-					))}
+						))}
 				</div>
 			</div>
 		</Modal>
