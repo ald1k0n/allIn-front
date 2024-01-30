@@ -40,7 +40,7 @@ export default function Complaints() {
 			cell: ({ row }: { row: { original: IComplaintModel } }) => {
 				return (
 					<div className='w-full flex justify-center'>
-						{row.original.user.name}
+						{row.original.target?.name}
 					</div>
 				);
 			},
@@ -113,7 +113,7 @@ export default function Complaints() {
 		// console.log(rowData);
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-expect-error
-		formData.append('id', rowData?.user_id);
+		formData.append('id', rowData?.target_id);
 		formData.append('blockHours', block.blockHours);
 		formData.append('blockReason', block.blockReason);
 
@@ -154,7 +154,7 @@ export default function Complaints() {
 				<Modal setIsOpen={setIsOpen}>
 					<div className='p-3 flex flex-col gap-y-4 w-80'>
 						<div className='text-center text-lg'>
-							Пользователь {rowData?.user.name}
+							Пользователь {rowData?.target?.name}
 						</div>
 						<Input
 							input_size={'medium'}
