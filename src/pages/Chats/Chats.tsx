@@ -21,7 +21,7 @@ import { MdDelete, MdEdit } from 'react-icons/md';
 
 export default function Chats() {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { data: users, isLoading: loadingUsers } = useGetUsersQuery();
+	const { isLoading: loadingUsers } = useGetUsersQuery();
 	const { data: locations, isLoading: locationsLoading } =
 		useGetLocationsQuery();
 
