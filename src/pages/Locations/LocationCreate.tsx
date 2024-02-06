@@ -24,7 +24,7 @@ export default function LocationCreate() {
 				error: (err) => JSON.stringify(err, null, 2),
 				loading: 'Загрузка...',
 			})
-			.finally(() => navigate('/chats'));
+			.finally(() => navigate('/location'));
 	};
 
 	return (

@@ -22,10 +22,10 @@ export const locationApi = createApi({
 					  ]
 					: [{ type: 'Locations', id: 'LIST' }],
 		}),
-		updateLocation: builder.mutation<undefined, any>({
+		updateLocation: builder.mutation<ILocationModel, any>({
 			query: (body) => {
 				return {
-					url: `/locations/${body.get('id')}`,
+					url: `/locations/${body.id}`,
 					method: 'PATCH',
 					body,
 				};
