@@ -9,25 +9,11 @@ import { logout } from '@/redux/slices/user.slice';
 import { FC } from 'react';
 
 import { SideButtons } from '..';
-import { MdCategory, MdOutlineReport } from 'react-icons/md';
+import { MdCategory, MdLocationOn, MdOutlineReport } from 'react-icons/md';
 
 interface IProps {
 	isOpen?: boolean;
 }
-
-/**
- * 
- * <div
-          onClick={() => navigate('/')}
-          className="font-semibold cursor-pointer h-full flex items-center gap-1"
-        >
-          <div className="h-full">
-            <img className="h-full rounded-full" src={logo} alt="All In" />
-          </div>
-          <div className="text-xl">All in</div>
-        </div>
- * @returns 
- */
 
 export const Sidebar: FC<IProps> = ({ isOpen }) => {
 	const dispatch = useAppDispatch();
@@ -75,6 +61,11 @@ export const Sidebar: FC<IProps> = ({ isOpen }) => {
 					link='/complaints'
 					routename='Жалобы'>
 					<MdOutlineReport className='text-white text-3xl' />
+				</SideButtons>
+				<SideButtons
+					link='/location'
+					routename='Локации'>
+					<MdLocationOn className='text-white text-3xl' />
 				</SideButtons>
 
 				<SideButtons

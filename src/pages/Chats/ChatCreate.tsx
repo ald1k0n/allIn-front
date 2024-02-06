@@ -145,11 +145,6 @@ export default function ChatCreate() {
 					</select>
 				</div>
 				<div className='w-full'>
-					<label
-						htmlFor='type'
-						className='text-lg font-medium'>
-						Изображение
-					</label>
 					<Button
 						onClick={() => fileRef.current.click()}
 						styles='outline'>

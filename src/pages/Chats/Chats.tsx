@@ -20,7 +20,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MdDelete, MdEdit } from 'react-icons/md';
 
 export default function Chats() {
-	const { data: users, isLoading: loadingUsers } = useGetUsersQuery();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const { isLoading: loadingUsers } = useGetUsersQuery();
 	const { data: locations, isLoading: locationsLoading } =
 		useGetLocationsQuery();
 
@@ -36,9 +37,9 @@ export default function Chats() {
 	const [rowData, setRowData] = useState<IChatModel>();
 	const [chat, setChat] = useState(rowData);
 	const [file, setFile] = useState(null);
-	const [chatType, setChatType] = useState('');
+	const [chatType] = useState('');
 	const [initialChat, setInitialChat] = useState<any>([]);
-	const [currentUser, setCurrentUser] = useState<number | null>(null);
+	const [currentUser] = useState<number | null>(null);
 
 	const [typeId, setTypeId] = useState<number | null>(null);
 	const [locationId, setLocationId] = useState<number | null>(null);
@@ -81,12 +82,6 @@ export default function Chats() {
 		{
 			header: 'Название',
 			accessorKey: 'title',
-		},
-		{
-			header: 'Местоположение',
-			cell: ({ row }: { row: { original: IChatModel } }) => {
-				return <div>{row.original.location?.name}</div>;
-			},
 		},
 		{
 			header: 'Чат закреплен',
@@ -228,9 +223,6 @@ export default function Chats() {
 						Количество чатов: {initialChat?.length ? initialChat.length : 0}
 					</div>
 					<div className={'flex gap-1.5'}>
-						<Link to='/chats/location/create'>
-							<Button styles='default'>Создать локацию</Button>
-						</Link>
 						<Link to='/chats/create'>
 							<Button styles='default'>Создать чат</Button>
 						</Link>
@@ -241,7 +233,7 @@ export default function Chats() {
 				) : (
 					<div className='md:flex-row w-full flex'>
 						<div className='w-full flex'>
-							<div className='w-full flex flex-col items-center gap-1.5'>
+							{/* <div className='w-full flex flex-col items-center gap-1.5'>
 								<select
 									id='user'
 									onChange={(e) => setCurrentUser(Number(e.target.value))}
@@ -259,8 +251,8 @@ export default function Chats() {
 										</option>
 									))}
 								</select>
-							</div>
-							<div className='w-full flex-col flex items-center gap-1.5'>
+							</div> */}
+							{/* <div className='w-full flex-col flex items-center gap-1.5'>
 								<select
 									id='sub-chat'
 									disabled={currentUser ? false : true}
@@ -291,7 +283,7 @@ export default function Chats() {
 										))}
 									</>
 								</select>
-							</div>
+							</div> */}
 
 							<div className='w-full flex-col flex items-center  gap-2'>
 								<select
@@ -306,11 +298,11 @@ export default function Chats() {
 										value={undefined}>
 										Выберите локацию чата
 									</option>
-									{locations?.locations.map((type) => (
+									{locations?.locations.map((type: any) => (
 										<option
-											value={type.id}
-											key={type.id}>
-											{type.name}
+											value={type.id as number}
+											key={type.id as number}>
+											{type.name as string}
 										</option>
 									))}
 								</select>
@@ -394,6 +386,28 @@ export default function Chats() {
 								))}
 							</select>
 						</div>
+
+						<div className='w-full flex justify-between items-center'>
+							<label
+								htmlFor='pin'
+								className='w-full text-lg text-wrap font-medium'>
+								Закрепить локацию?
+							</label>
+
+							<input
+								type='checkbox'
+								id='pin'
+								defaultChecked={rowData?.isLocationPinned}
+								onChange={(e) =>
+									setChat((prev) => {
+										return {
+											...prev,
+											isLocationPinned: e.target.checked,
+										} as IChatModel;
+									})
+								}
+							/>
+						</div>
 						<div className='w-full flex flex-col'>
 							<label
 								htmlFor='location'
@@ -401,6 +415,7 @@ export default function Chats() {
 								Местоположение
 							</label>
 							<select
+								disabled={!chat?.isLocationPinned}
 								onChange={(e) =>
 									setChat((prev) => {
 										return {
@@ -425,25 +440,6 @@ export default function Chats() {
 									</option>
 								))}
 							</select>
-						</div>
-						<div className='w-full flex justify-between items-center'>
-							<label
-								htmlFor='pin'
-								className='w-full text-lg text-wrap font-medium'>
-								Закрепить локацию?
-							</label>
-							<input
-								type='checkbox'
-								id='pin'
-								onChange={(e) =>
-									setChat((prev) => {
-										return {
-											...prev,
-											isLocationPinned: e.target.checked,
-										} as IChatModel;
-									})
-								}
-							/>
 						</div>
 						<div>
 							<label

@@ -147,7 +147,13 @@ export default function Complaints() {
 				</div>
 				<Table
 					columns={cols}
-					data={complaints?.complaints as IComplaintModel[]}
+					data={
+						complaints?.complaints
+							.slice()
+							.sort(
+								(a, b) => (a?.id as number) - (b?.id as number)
+							) as IComplaintModel[]
+					}
 				/>
 			</main>
 			{isOpen && (
