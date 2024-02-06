@@ -20,7 +20,8 @@ const Home = lazy(() => import('@/pages/Home')),
 	ErrorPage = lazy(() => import('@/pages/ErrorPage')),
 	SubChats = lazy(() => import('@/pages/Chats/SubChats')),
 	UserProfileImages = lazy(() => import('@/pages/Users/UserProfileImages')),
-	Complaints = lazy(() => import('@/pages/Complaints/Complaints'));
+	Complaints = lazy(() => import('@/pages/Complaints/Complaints')),
+	Location = lazy(() => import('@/pages/Locations/Locations'));
 
 const router = createBrowserRouter([
 	{
@@ -40,10 +41,6 @@ const router = createBrowserRouter([
 			</Layout>
 		),
 		children: [
-			{
-				path: '/chats/location/create',
-				element: <LocationCreate />,
-			},
 			{
 				path: '/chats/create',
 				element: <ChatCreate />,
@@ -83,6 +80,23 @@ const router = createBrowserRouter([
 	{
 		path: '/login',
 		element: <Login />,
+	},
+	{
+		path: '/location',
+		element: (
+			<>
+				<Outlet />
+				<Layout>
+					<Location />
+				</Layout>
+			</>
+		),
+		children: [
+			{
+				path: '/location/create',
+				element: <LocationCreate />,
+			},
+		],
 	},
 	{
 		path: '/categories',

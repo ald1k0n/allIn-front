@@ -41,6 +41,10 @@ export default function Users() {
 			accessorKey: 'phone',
 		},
 		{
+			header: 'Роль',
+			accessorKey: 'role',
+		},
+		{
 			header: 'Дата создания',
 			accessorKey: 'createdAt',
 			cell: ({ row }: { row: { original: IUser } }) => {
