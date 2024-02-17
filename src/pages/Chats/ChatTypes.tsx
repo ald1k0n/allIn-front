@@ -35,6 +35,12 @@ export default function ChatTypes() {
 			accessorKey: 'isEditable',
 		},
 		{
+			header: 'Доступен',
+			cell: ({ row }: { row: { original: IChatTypeModel } }) => (
+				<div>{row.original.isAvailable ? 'Доступен' : 'Не доступен'}</div>
+			),
+		},
+		{
 			header: 'Дата создания',
 			accessorKey: 'createdAt',
 			cell: ({ row }: { row: { original: IChatTypeModel } }) => {
@@ -139,6 +145,25 @@ export default function ChatTypes() {
 							placeholder={'Название'}
 							label={'Название'}
 						/>
+
+						<div className='flex gap-3'>
+							<label
+								htmlFor='isAvailable'
+								className={`text-lg font-medium text-black`}>
+								Доступен
+							</label>
+							<input
+								type='checkbox'
+								name='isAvailable'
+								onChange={(e) =>
+									setChatType((prev) => ({
+										...prev,
+										isAvailable: e.target.checked,
+									}))
+								}
+								defaultChecked={rowData?.isAvailable}
+							/>
+						</div>
 
 						<Button
 							styles={'default'}

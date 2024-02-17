@@ -151,7 +151,7 @@ export default function Complaints() {
 						complaints?.complaints
 							.slice()
 							.sort(
-								(a, b) => (a?.id as number) - (b?.id as number)
+								(a, b) => (b?.id as number) - (a?.id as number)
 							) as IComplaintModel[]
 					}
 				/>

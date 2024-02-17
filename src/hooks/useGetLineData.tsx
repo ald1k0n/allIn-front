@@ -32,7 +32,7 @@ export const useGetLineData = () => {
 			}, {});
 			setData((prev) => ({
 				...prev,
-				labels: Object.keys(counts || {}),
+				labels: Object.keys(counts || {}).reverse(),
 				data: [
 					{
 						data: Object.values(counts || {}),
