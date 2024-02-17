@@ -3,4 +3,5 @@ export interface IChatTypeModel {
 	title?: string;
 	isEditable?: boolean;
 	createdAt?: string;
+	isAvailable?: boolean;
 }
