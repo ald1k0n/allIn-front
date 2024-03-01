@@ -1,23 +1,43 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
-import InputMask from 'react-input-mask';
-
-import { ILogin } from '@/models';
-import { useAppDispatch } from '@/hooks';
-import { Button, Input } from '@/components';
 import logo from '@/assets/logo.jpg';
+import { Button, Input } from '@/components';
+import { useAppDispatch } from '@/hooks';
+import { ILogin } from '@/models';
+import { useSendCodeMutation } from '@/redux/services';
 import { login } from '@/redux/slices/user.slice';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import InputMask from 'react-input-mask';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
 	const { register, handleSubmit, setValue } = useForm<ILogin>();
+	const [sendCode] = useSendCodeMutation();
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
-	const onSubmit: SubmitHandler<ILogin> = async (data) => {
+
+	const [credentials, setCredentials] = useState({
+		phone: '',
+		code: '',
+	});
+
+	const getCode: SubmitHandler<{ phone: string }> = async ({ phone }) => {
+		await sendCode({ phone })
+			.then(() => toast.success('Ожидайте код в течений минуты'))
+			.catch(() => {
+				toast.error('Произошла ошибка сервиса отправки сообщений');
+			});
+
+		setCredentials((prev) => ({
+			...prev,
+			phone,
+		}));
+	};
+
+	const Login = async () => {
 		const values: ILogin = {
-			...data,
-			code: '1935',
+			...credentials,
 			device_token: '0101',
 		};
 		await toast
@@ -34,7 +54,7 @@ export default function Login() {
 		<main className='w-full bg-white min-h-screen flex justify-center items-center'>
 			<form
 				className='w-96 h-96 rounded-xl p-2 flex justify-center items-center flex-col gap-y-2'
-				onSubmit={handleSubmit(onSubmit)}>
+				onSubmit={handleSubmit(getCode)}>
 				<div className='w-20 h-20 '>
 					<img
 						src={logo}
@@ -43,31 +63,63 @@ export default function Login() {
 					/>
 				</div>
 
-				<InputMask
-					mask='+79999999999'
-					//@ts-ignore
-					onChange={(e) => setValue('phone', e.target.value)}
-					{...register('phone', { required: 'Номер телефона обязателен' })}>
-					{
-						//@ts-ignore
-						(inputProps) => (
-							<Input
-								{...inputProps}
-								label='Номер телефона'
-								label_color='black'
-								placeholder='+77777777777'
-								input_size='large'
-							/>
-						)
-					}
-				</InputMask>
-				<div className='w-full'>
-					<Button
-						type='submit'
-						styles='default'>
-						Войти
-					</Button>
-				</div>
+				{credentials.phone.length === 0 ? (
+					<>
+						<InputMask
+							mask='+79999999999'
+							//@ts-ignore
+							onChange={(e) => setValue('phone', e.target.value)}
+							{...register('phone', { required: 'Номер телефона обязателен' })}>
+							{
+								//@ts-ignore
+								(inputProps) => (
+									<Input
+										{...inputProps}
+										label='Номер телефона'
+										label_color='black'
+										placeholder='+77777777777'
+										input_size='large'
+									/>
+								)
+							}
+						</InputMask>
+						<div className='w-full'>
+							<Button
+								type='submit'
+								styles='default'>
+								Отправить код
+							</Button>
+						</div>
+					</>
+				) : (
+					<>
+						<InputMask
+							mask='9999'
+							onChange={(e) => {
+								setCredentials((prev) => ({ ...prev, code: e.target.value }));
+							}}>
+							{
+								//@ts-ignore
+								(inputProps: any) => (
+									<Input
+										{...inputProps}
+										input_size='large'
+										label='Код'
+										placeholder='9999'
+									/>
+								)
+							}
+						</InputMask>
+						<div className='w-full'>
+							<Button
+								type='button'
+								onClick={Login}
+								styles='default'>
+								Войти
+							</Button>
+						</div>
+					</>
+				)}
 			</form>
 		</main>
 	);
