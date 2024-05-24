@@ -9,7 +9,10 @@ export const likeApi = createApi({
 		baseUrl: baseURL,
 		prepareHeaders(headers, api) {
 			const acceess_token = (api.getState() as RootState).user.accessToken;
-			headers.set('Authorization', `Bearer ${acceess_token}`);
+			headers.set(
+				'Authorization',
+				`Bearer ${acceess_token?.replaceAll('"', '')}`
+			);
 		},
 	}),
 	tagTypes: ['Likes'],

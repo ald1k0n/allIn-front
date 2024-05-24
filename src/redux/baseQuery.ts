@@ -25,9 +25,7 @@ export const baseQueryReAuth = async (
 		console.log('sending refresh');
 		const refreshResult = await fetch(`${baseURL}/auth/refresh`, {
 			headers: {
-				authorization: `Bearer ${JSON.parse(
-					localStorage.getItem('refreshToken')!
-				)}`,
+				authorization: `Bearer ${localStorage.getItem('refreshToken')!}`,
 			},
 		})
 			.then((res) => res.json())

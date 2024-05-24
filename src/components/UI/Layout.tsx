@@ -14,7 +14,7 @@ export const Layout: FC<IProps> = ({ children }) => {
 
 	useEffect(() => {
 		if (!accessToken || user?.role !== 'admin') navigate('/login');
-	}, [accessToken, navigate, user]);
+	}, [accessToken, user]);
 
 	return (
 		<>

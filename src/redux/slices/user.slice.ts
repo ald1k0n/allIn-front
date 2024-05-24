@@ -47,9 +47,9 @@ export const login = createAsyncThunk('userApi/login', async (body: ILogin) => {
 const refresh = async () => {
 	const { data } = await axios.get(`${baseURL}/auth/refresh`, {
 		headers: {
-			authorization: `Bearer ${JSON.parse(
-				localStorage.getItem('refreshToken')!
-			)}`,
+			authorization: `Bearer ${localStorage
+				.getItem('refreshToken')!
+				.replaceAll('"', '')}`,
 		},
 		withCredentials: true,
 	});
@@ -59,9 +59,9 @@ const refresh = async () => {
 export const getMe = createAsyncThunk('userApi/getMe', async () => {
 	const { data } = await axios.get(`${baseURL}/users/account`, {
 		headers: {
-			authorization: `Bearer ${JSON.parse(
-				localStorage.getItem('accessToken')!
-			)}`,
+			authorization: `Bearer ${localStorage
+				.getItem('accessToken')!
+				.replaceAll('"', '')}`,
 		},
 		withCredentials: true,
 	});
