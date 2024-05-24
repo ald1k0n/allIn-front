@@ -12,8 +12,8 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-	accessToken: JSON.parse(localStorage.getItem('accessToken')!) || null,
-	refreshToken: JSON.parse(localStorage.getItem('refreshToken')!) || null,
+	accessToken: localStorage.getItem('accessToken') || null,
+	refreshToken: localStorage.getItem('refreshToken') || null,
 	user: null,
 	isLoading: false,
 	isError: null,
@@ -75,11 +75,11 @@ const userSlice = createSlice({
 	reducers: {
 		setAccessToken: (state, action) => {
 			state.accessToken = action.payload;
-			localStorage.setItem('accessToken', JSON.stringify(action.payload));
+			localStorage.setItem('accessToken', action.payload);
 		},
 		setRefreshToken: (state, action) => {
 			state.refreshToken = action.payload;
-			localStorage.setItem('refreshToken', JSON.stringify(action.payload));
+			localStorage.setItem('refreshToken', action.payload);
 		},
 		logout: (state) => {
 			localStorage.clear();

@@ -1,21 +1,31 @@
-import {IComplaintModel} from "@/models/complaint.model.ts";
-import {createApi} from "@reduxjs/toolkit/query/react";
-import {baseQueryReAuth} from "@/redux/baseQuery.ts";
-
+import { IComplaintModel } from '@/models/complaint.model.ts';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { baseURL } from '@/configs';
+import { RootState } from '../store';
 
 export const complaintApi = createApi({
 	reducerPath: 'complaints',
-	baseQuery: baseQueryReAuth,
+	baseQuery: fetchBaseQuery({
+		baseUrl: baseURL,
+		prepareHeaders(headers, api) {
+			const acceess_token = (api.getState() as RootState).user.accessToken;
+			headers.set('Authorization', `Bearer ${acceess_token}`);
+		},
+	}),
+
 	tagTypes: ['Complaints'],
 	endpoints: (builder) => ({
-		getComplaints: builder.query<{ complaints: IComplaintModel[]; }, void>({
+		getComplaints: builder.query<{ complaints: IComplaintModel[] }, void>({
 			query: () => ({
 				url: '/complaints',
 			}),
 			providesTags: (result) =>
 				result
 					? [
-							...result.complaints.map(({ id }) => ({ type: 'Complaints' as const, id })),
+							...result.complaints.map(({ id }) => ({
+								type: 'Complaints' as const,
+								id,
+							})),
 							{ type: 'Complaints', id: 'LIST' },
 					  ]
 					: [{ type: 'Complaints', id: 'LIST' }],
@@ -41,7 +51,7 @@ export const complaintApi = createApi({
 });
 
 export const {
-    useGetComplaintsQuery,
-    useDeleteComplaintMutation,
-    useCreateComplaintMutation
+	useGetComplaintsQuery,
+	useDeleteComplaintMutation,
+	useCreateComplaintMutation,
 } = complaintApi;

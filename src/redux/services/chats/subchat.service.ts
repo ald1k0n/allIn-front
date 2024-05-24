@@ -1,10 +1,17 @@
+import { baseURL } from '@/configs';
 import { ISubChatModel } from '@/models/chats/subchat.model';
-import { baseQueryReAuth } from '@/redux/baseQuery.ts';
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { RootState } from '@/redux/store';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const subchatApi = createApi({
 	reducerPath: 'subchat',
-	baseQuery: baseQueryReAuth,
+	baseQuery: fetchBaseQuery({
+		baseUrl: baseURL,
+		prepareHeaders(headers, api) {
+			const acceess_token = (api.getState() as RootState).user.accessToken;
+			headers.set('Authorization', `Bearer ${acceess_token}`);
+		},
+	}),
 	tagTypes: ['SubChats'],
 	endpoints: (builder) => ({
 		getSubchatByChatId: builder.query<{ subChats: ISubChatModel[] }, number>({

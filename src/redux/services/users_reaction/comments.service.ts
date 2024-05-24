@@ -1,10 +1,17 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQueryReAuth } from '@/redux/baseQuery.ts';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { ICommentModel } from '@/models/users_reaction/comment.model.ts';
+import { baseURL } from '@/configs';
+import { RootState } from '@/redux/store';
 
 export const commentApi = createApi({
 	reducerPath: 'comment',
-	baseQuery: baseQueryReAuth,
+	baseQuery: fetchBaseQuery({
+		baseUrl: baseURL,
+		prepareHeaders(headers, api) {
+			const acceess_token = (api.getState() as RootState).user.accessToken;
+			headers.set('Authorization', `Bearer ${acceess_token}`);
+		},
+	}),
 	tagTypes: ['Comments'],
 	endpoints: (builder) => ({
 		getComments: builder.query<ICommentModel[], number>({

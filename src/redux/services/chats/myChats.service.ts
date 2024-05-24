@@ -1,11 +1,18 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQueryReAuth } from '@/redux/baseQuery.ts';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IMyChatModel } from '@/models/chats/my-chat.model.ts';
 import { ChatCategories } from '@/models/chats/chat.model.ts';
+import { baseURL } from '@/configs';
+import { RootState } from '@/redux/store';
 
 export const myChatApi = createApi({
 	reducerPath: 'myChat',
-	baseQuery: baseQueryReAuth,
+	baseQuery: fetchBaseQuery({
+		baseUrl: baseURL,
+		prepareHeaders(headers, api) {
+			const acceess_token = (api.getState() as RootState).user.accessToken;
+			headers.set('Authorization', `Bearer ${acceess_token}`);
+		},
+	}),
 	tagTypes: ['MyChats'],
 	endpoints: (builder) => ({
 		getMyChats: builder.query<IMyChatModel[], string>({

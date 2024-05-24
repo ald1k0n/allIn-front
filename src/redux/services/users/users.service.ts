@@ -1,10 +1,17 @@
+import { baseURL } from '@/configs';
 import { IUser } from '@/models';
-import { baseQueryReAuth } from '@/redux/baseQuery';
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { RootState } from '@/redux/store';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const userApi = createApi({
 	reducerPath: 'userApi',
-	baseQuery: baseQueryReAuth,
+	baseQuery: fetchBaseQuery({
+		baseUrl: baseURL,
+		prepareHeaders(headers, api) {
+			const acceess_token = (api.getState() as RootState).user.accessToken;
+			headers.set('Authorization', `Bearer ${acceess_token}`);
+		},
+	}),
 	tagTypes: ['Users'],
 	endpoints: (builder) => ({
 		getUsers: builder.query<{ data: IUser[]; count: number }, void>({
